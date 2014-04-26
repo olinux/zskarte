@@ -1,0 +1,185 @@
+<!doctype html>
+<!--
+  ~ Copyright © 2015 Oliver Schmid
+  ~
+  ~ This file is part of Zivilschutzkarte.
+  ~
+  ~ Zivilschutzkarte is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Zivilschutzkarte is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Zivilschutzkarte.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<html ng-app="zivilschutz">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="bower_components/openlayers/css/ol.css" type="text/css">
+    <link rel="stylesheet" href="css/signaturen.css"/>
+
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+
+
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script>
+        var mapprovider = window.location.search.substring(1);
+        if (mapprovider === 'geoadmin') {
+            document.write('<script src="http://api3.geo.admin.ch/loader.js?lang=en" type="text/javascript"/>');
+        }
+    </script>
+    <script src="js/ol.js" type="text/javascript"></script>
+    <script src="js/zskarte/clock.js"></script>
+    <script src="js/zskarte/drawstyle.js"></script>
+    <script src="js/zskarte/drawlayer.js"></script>
+    <script src="js/zskarte/zsmap.js"></script>
+    <script src="js/zskarte/offlinemap.js"></script>
+    <script src="js/app.js"></script>
+</head>
+<body>
+
+<style>
+    body {
+        overflow: hidden;
+    }
+
+    .map {
+        height: 100vh;
+        width: 100%;
+        overflow: hidden;
+    }
+</style>
+
+<div ng-controller="MapController">
+    <div id="map" class="map" style="position:absolute; top:0; bottom:0; width:100%; overflow:hidden;"></div>
+    <div style="position:absolute; top:2em; right:2em;">
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#signature"><span
+                class="glyphicon glyphicon glyphicon-pencil"/> Zeichnen
+        </button>
+
+        <div class="btn-group">
+            <button type="button" class="btn btn-info"><span
+                    class="glyphicon glyphicon-eye-open"/> Layers
+            </button>
+            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li ng-repeat="l in mylayers">
+                    <div class="input-group">
+            <span>
+                <input type="checkbox" ng-model="l.toggled" ng-change="toggleLayer(l)"/>
+            </span>
+                        {{l.name}}
+                    </div>
+                </li>
+                <li><br/><b>Andere Provider</b></li>
+                <li ng-repeat="p in providers">
+                    <a href="?{{p}}">{{p}}</a>
+                </li>
+            </ul>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn btn-info"><span
+                    class="glyphicon glyphicon-folder-open"/> Karte
+            </button>
+            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a data-toggle="modal" data-target="#loadFromFileDialog">Import GeoJSON</a></li>
+                <li><a download="features.json" id="export">Export GeoJSON</a></li>
+                <li><a id="export-jpg" download="map.jpg">Export JPEG</a></li>
+            </ul>
+        </div>
+
+    </div>
+    <div id="geocoder" class="input-group" style="position:absolute; top:1em; left:10em; width:20vw;">
+        <span class="input-group-addon glyphicon glyphicon-search" ng-click="findPlace()"></span>
+
+        <form ng-submit="findPlace()">
+            <input type="text" ng-model="geocode" placeholder="Ort finden" class="form-control">
+        </form>
+
+    </div>
+    <div class="modal fade" id="loadFromFileDialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Von Datei laden
+                </div>
+                <div class="modal-body">
+                     <input id="loadFromFile" type="file" class="form-control">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="readFromFile()">Laden</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="clock" style="position:absolute; top:1em; left:3em; background-color:white; text-align:center"></div>
+    <div id="status"
+         style="position:absolute; bottom:0px; left:0px; height:2em; background-color:white; text-align:center"></div>
+    <div ng-controller="SignaturenController">
+        <div style="position:absolute; bottom:2em; left:2em; width: 15em; background-color: white; height:10em; text-align: center"
+             ng-if="selectedSignature != undefined">
+            {{selectedSignature.de}}<br/>
+            <img src="signaturen/{{selectedSignature.src}}"
+                 style="max-height: 50%; min-height:50%; max-width: 50%;"/><br/>
+            <!--</div>-->
+            <!--<div style="height: 5vh;" ng-if="selectedFeature!=undefined">-->
+            <a class="btn btn-info dropdown-toggle clear" ng-click="deleteFeature(selectedFeature);"
+               ng-if="selectedFeature!=undefined">Löschen</a>
+        </div>
+
+
+        <div class="modal fade" id="signature">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        Signatur auswählen
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="input-group">
+                            <span class="input-group-addon glyphicon glyphicon-search"></span>
+                            <input type="text" ng-model="signaturFilter" placeholder="Signaturen filtern"
+                                   class="form-control">
+                        </div>
+
+
+                        <div class="list-group" style="max-height:70vh; overflow:auto;">
+                            <a ng-repeat="signatur in signaturen.signaturen | filter:signaturFilter | orderBy:de"
+                               ng-click="selectItem(signatur);" class="list-group-item"
+                               ng-class="{active :  signatur==selectedSignature}"
+                               ng-if="signatur.src != undefined"><span
+                                    style="display:inline-block; width:2.5em;"><img
+                                    src="signaturen/{{signatur.src}}"
+                                    style="max-height: 2em; max-width: 2em;"/></span>{{signatur.de}}</a>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Weiter</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    window.scrollTo(0, 0);
+</script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+==========================================================================
+== Zivilschutzkarte                                                     ==
+== Copyright 2015 Oliver Schmid                                         ==
+==========================================================================
+
+-----------------------------------------------------------------------------------------------------------
+Zivilschutzkarte makes use of different third party libraries. The corresponding credits go to the authors:
+-----------------------------------------------------------------------------------------------------------
+
+Openlayers 3 - The original software is available from http://openlayers.org/, License: 2-Clause BSD
+
+AngularJS - The original software is available from https://angularjs.org/, License: MIT
+
+JQuery - The original software is available from https://jquery.org/, License: MIT
+
+Bootstrap - The original software is available from http://getbootstrap.com/, License: MIT
+
+Closurelibrary - The original software is available from https://github.com/google/closure-library, License: Apache License Version 2.0
+
+GeoAdmin API - The original software is available from http://www.geo.admin.ch/, License: BSD
+
+FontAwesome - The original software is available from http://fortawesome.github.io/, License: SIL OFL 1.1 / MIT
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------
+Symbols are either taken from the bootstrap and/or font awesome library or are taken from the collection of
+"Zivile Signaturen" available at http://www.bevoelkerungsschutz.admin.ch/internet/bs/de/home/dokumente/aubildungsunterlagen/zivabk.html
+---------------------------------------------------------------------------------------------------------------------------------------
+
+
+PLEASE NOTE:
+
+Zivilschutzkarte makes use of several services providing maps / tiles:
+
+- OpenStreetMap: http://www.openstreetmap.org/
+- Nominatim: https://nominatim.openstreetmap.org/
+- MapQuest: http://developer.mapquest.com/
+- GeoAdmin: http://www.geo.admin.ch/
+
+Although their API licenses and/or data are open source / creative commons, the terms of use for the services might be restricted.
+Please make sure, that you're obeying the corresponding terms of use if you make use of this program!

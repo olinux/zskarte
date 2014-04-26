@@ -1,0 +1,25 @@
+loadOfflineMaps({
+    "maps": [
+        {
+            "name": "Offlinekarte Bern",
+            "subfolder": "bern",
+            "descr": "Test map",
+            "images": [
+                {
+                    "url": "bern_big.png",
+                    "coordinates": [831102.2126235602, 5934486.552160559, 826938.783239152, 5932475.302853805],
+                    "imageSize":[1743, 842],
+                    "maxzoomLevel":99999,
+                    "minzoomLevel":3
+                },
+                {
+                    "url": "bern_middle.png",
+                    "coordinates": [830248.0777106468, 5933968.52611944, 828155.6140613392, 5933039.338494348],
+                    "imageSize":[1754, 780],
+                    "maxzoomLevel":3,
+                    "minzoomLevel":0
+                }
+                ]
+        }
+    ]
+});

@@ -1,0 +1,808 @@
+loadSignaturen({  
+   "signaturen":[  
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"ABC Dekontaminationsstelle.png",
+         "de":"ABC Dekontaminationsstelle"
+      },
+      {  
+         "type":"Polygon",
+         "kat":"blue",
+         "src":"Absperrung Einsatzraum.png",
+         "de":"Absperrung Einsatzraum"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Absperrung Verkehrswege.png",
+         "de":"Absperrung Verkehrswege"
+      },
+      {  
+         "type":"LineString",
+         "kat":"blue",
+         "src":"Achse fuer Ei, Rttg, Vsg.png",
+         "de":"Achse fuer Ei, Rttg, Vsg",
+         "style":"dash"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Angehoerigensammelstelle.png",
+         "de":"Angehoerigensammelstelle"
+      },
+      {  
+         "type":"Point",
+         "kat":"red",
+         "src":"Atomunfall.png",
+         "de":"Atomunfall"
+      },
+      {  
+         "type":"Point",
+         "kat":"red",
+         "src":"Autounfall_2.png",
+         "de":"Autounfall_2"
+      },
+      {  
+         "type":"LineString",
+         "kat":"blue",
+         "src":"Beabsichtigte Erkundung.png",
+         "de":"Beabsichtigte Erkundung"
+      },
+      {  
+         "type":"LineString",
+         "kat":"blue",
+         "src":"Beabsichtigter Einsatz.png",
+         "de":"Beabsichtigter Einsatz",
+         "style":"dash"
+      },
+      {  
+         "type":"LineString",
+         "kat":"blue",
+         "src":"Beabsichtigte Verschiebung.png",
+         "de":"Beabsichtigte Verschiebung",
+         "style":"dash"
+
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Beobachtung.png",
+         "de":"Beobachtung"
+      },
+      {  
+         "type":"Point",
+         "kat":"red",
+         "src":"Beschaedigung.png",
+         "de":"Beschaedigung"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Betreuungsstelle.png",
+         "de":"Betreuungsstelle"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Betriebsstoffabgabestelle.png",
+         "de":"Betriebsstoffabgabestelle"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Bezirksfuehrungsorgan.png",
+         "de":"Bezirksfuehrungsorgan"
+      },
+      {  
+         "type":"Polygon",
+         "kat":"other",
+         "src":"Biologisch verseuchtes Gebiet.png",
+         "de":"Biologisch verseuchtes Gebiet"
+      },
+      {  
+         "type":"Point",
+         "kat":"red",
+         "src":"Biounfall.png",
+         "de":"Biounfall"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"B Laboratorium.png",
+         "de":"B Laboratorium"
+      },
+      {  
+         "type":"Point",
+         "kat":"red",
+         "src":"Bombenanschlag.png",
+         "de":"Bombenanschlag"
+      },
+      {  
+         "type":"Point",
+         "kat":"red",
+         "src":"Bombendrohung.png",
+         "de":"Bombendrohung"
+      },
+      {  
+         "type":"Point",
+         "kat":"red",
+         "src":"Brandanschlag.png",
+         "de":"Brandanschlag"
+      },
+      {  
+         "type":"Point",
+         "kat":"red",
+         "src":"Brand einzelnes Gebaeude Flamme.png",
+         "de":"Brand einzelnes Gebaeude Flamme"
+      },
+      {  
+         "type":"Polygon",
+         "kat":"red",
+         "src":"Brand einzelnes Gebaeude - Signatur.png",
+         "de":"Brand einzelnes Gebaeude - Signatur",
+         "example":"Brand einzelnes Gebaeude - Beispiel.png"
+      },
+      {  
+         "type":"Polygon",
+         "kat":"red",
+         "src":"Brand mehrerer Gebaeude - Signatur.png",
+         "de":"Brand mehrerer Gebaeude - Signatur",
+         "example":"Brand mehrerer Gebaeude - Beispiel.png"
+      },
+      {  
+         "type":"Point",
+         "kat":"red",
+         "src":"Brand.png",
+         "de":"Brand"
+      },
+      {  
+         "type":"LineString",
+         "kat":"red",
+         "src":"Branduebergriff erfolgt - Signatur.png",
+         "de":"Branduebergriff erfolgt",
+         "example":"Branduebergriff erfolgt - Beispiel.png"
+      },
+      {  
+         "type":"LineString",
+         "kat":"red",
+         "src":"Branduebergriffsgefahr - Signatur.png",
+         "de":"Branduebergriffsgefahr - Signatur",
+         "example":"Branduebergriffsgefahr - Beispiel.png",
+         "style":"dash"
+      },
+      {  
+         "type":"Polygon",
+         "kat":"red",
+         "src":"Brandzone Flaechenbrand.png",
+         "de":"Brandzone Flaechenbrand"
+      },
+      {  
+         "type":"Point",
+         "kat":"red",
+         "src":"Chemieunfall.png",
+         "de":"Chemieunfall"
+      },
+      {  
+         "type":"Polygon",
+         "kat":"other",
+         "src":"Chemievergiftetes Gebiet gasfoermig - fluechtig.png",
+         "de":"Chemievergiftetes Gebiet gasfoermig - fluechtig"
+      },
+      {  
+         "type":"Polygon",
+         "kat":"other",
+         "src":"Chemievergiftete Zone fluessig - sesshaft.png",
+         "de":"Chemievergiftete Zone fluessig - sesshaft"
+      },
+      {  
+         "type":"Point",
+         "kat":"orange",
+         "src":"Chemikalien.png",
+         "de":"Chemikalien"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Debriefingstelle.png",
+         "de":"Debriefingstelle"
+      },
+      {  
+         "type":"Point",
+         "kat":"red",
+         "src":"Demo gewaltlos.png",
+         "de":"Demo gewaltlos"
+      },
+      {  
+         "type":"Point",
+         "kat":"red",
+         "src":"Demo gewaltsam.png",
+         "de":"Demo gewaltsam"
+      },
+      {  
+         "type":"Point",
+         "kat":"red",
+         "src":"Drohung.png",
+         "de":"Drohung"
+      },
+      {  
+         "type":"Point",
+         "kat":"red",
+         "src":"Duerre.png",
+         "de":"Duerre"
+      },
+      {  
+         "type":"LineString",
+         "kat":"blue",
+         "src":"Durchgefuehrte Erkundung.png",
+         "de":"Durchgefuehrte Erkundung"
+      },
+      {  
+         "type":"LineString",
+         "kat":"blue",
+         "src":"Durchgefuehrter Einsatz.png",
+         "de":"Durchgefuehrter Einsatz"
+      },
+      {  
+         "type":"LineString",
+         "kat":"blue",
+         "src":"Durchgefuehrte Verschiebung.png",
+         "de":"Durchgefuehrte Verschiebung"
+      },
+      {  
+         "type":"Polygon",
+         "kat":"red",
+         "src":"Eingesperrte - Abgeschnittene.png",
+         "de":"Eingesperrte - Abgeschnittene"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Einsatzleiter.png",
+         "de":"Einsatzleiter"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Einsatzleitung.png",
+         "de":"Einsatzleitung"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Einsatzzentrale.png",
+         "de":"Einsatzzentrale"
+      },
+      {  
+         "type":"Point",
+         "kat":"red",
+         "src":"Eisenbahnunglueck.png",
+         "de":"Eisenbahnunglueck"
+      },
+      {  
+         "type":"Point",
+         "kat":"orange",
+         "src":"Elektrizitaet.png",
+         "de":"Elektrizitaet"
+      },
+      {  
+         "type":"Polygon",
+         "kat":"red",
+         "src":"Energieausfall.png",
+         "de":"Energieausfall"
+      },
+      {  
+         "type":"Point",
+         "kat":"red",
+         "src":"Epidemie.png",
+         "de":"Epidemie"
+      },
+      {  
+         "type":"Polygon",
+         "kat":"red",
+         "src":"Erdbeben.png",
+         "de":"Erdbeben"
+      },
+      {  
+         "type":"Polygon",
+         "kat":"red",
+         "src":"Erdrutsch.png",
+         "de":"Erdrutsch"
+      },
+      {  
+         "type":"Point",
+         "kat":"orange",
+         "src":"Explosion.png",
+         "de":"Explosion"
+      },
+      {  
+         "type":"Polygon",
+         "kat":"red",
+         "src":"Explosionsherd - Signatur.png",
+         "de":"Explosionsherd - Signatur",
+         "example":"Explosionsherd - Beispiel.png"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Fahrzeugplatz.png",
+         "de":"Fahrzeugplatz"
+      },
+      {  
+         "type":"Point",
+         "kat":"red",
+         "src":"Fluechtlinge.png",
+         "de":"Fluechtlinge"
+      },
+      {  
+         "type":"Point",
+         "kat":"red",
+         "src":"Flugzeugabsturz.png",
+         "de":"Flugzeugabsturz"
+      },
+      {  
+         "type":"Point",
+         "kat":"orange",
+         "src":"Gas.png",
+         "de":"Gas"
+      },
+      {  
+         "type":"Point",
+         "kat":"red",
+         "src":"Gebaeudeeinsturz.png",
+         "de":"Gebaeudeeinsturz"
+      },
+      {  
+         "type":"Point",
+         "kat":"orange",
+         "src":"Gefahr durch Loeschen mit Wasser.png",
+         "de":"Gefahr durch Loeschen mit Wasser"
+      },
+      {  
+         "type":"Point",
+         "kat":"orange",
+         "src":"Gefahrentafel mit UN-Nummer.png",
+         "de":"Gefahrentafel mit UN-Nummer"
+      },
+      {  
+         "type":"Point",
+         "kat":"orange",
+         "src":"Gefahr fuer Grundwasser.png",
+         "de":"Gefahr fuer Grundwasser"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Gemeindefuehrungsorgan.png",
+         "de":"Gemeindefuehrungsorgan"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Gruppenfuehrer.png",
+         "de":"Gruppenfuehrer"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Gruppe.png",
+         "de":"Gruppe"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Helikopterlandeplatz.png",
+         "de":"Helikopterlandeplatz"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Informationsstelle.png",
+         "de":"Informationsstelle"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Informationszentrum.png",
+         "de":"Informationszentrum"
+      },
+      {  
+         "type":"Point",
+         "kat":"red",
+         "src":"Infrastrukturschaden.png",
+         "de":"Infrastrukturschaden"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Kadaversammelstelle.png",
+         "de":"Kadaversammelstelle"
+      },
+      {  
+         "type":"Point",
+         "kat":"red",
+         "src":"Kanalisationsausfall.png",
+         "de":"Kanalisationsausfall"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Kantonales Fuehrungsorgan.png",
+         "de":"Kantonales Fuehrungsorgan"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"KGS Sammelpunkt.png",
+         "de":"KGS Sammelpunkt"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Kommandoposten Front.png",
+         "de":"Kommandoposten Front"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Kommandoposten Rueckwaertiges.png",
+         "de":"Kommandoposten Rueckwaertiges"
+      },
+      {  
+         "type":"Point",
+         "kat":"red",
+         "src":"Kommunikationsstoerung.png",
+         "de":"Kommunikationsstoerung"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Kompanie.png",
+         "de":"Kompanie"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Kontrollstelle.png",
+         "de":"Kontrollstelle"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Kontrollzentrum.png",
+         "de":"Kontrollzentrum"
+      },
+      {  
+         "type":"Polygon",
+         "kat":"red",
+         "src":"Lawine.png",
+         "de":"Lawine"
+      },
+      {  
+         "type":"Point",
+         "kat":"red",
+         "src":"Massenpanik.png",
+         "de":"Massenpanik"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Materialdepot.png",
+         "de":"Materialdepot"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Mobile Einsatzzentrale.png",
+         "de":"Mobile Einsatzzentrale"
+      },
+      {  
+         "type":"Point",
+         "kat":"red",
+         "src":"Obdachlose.png",
+         "de":"Obdachlose"
+      },
+      {  
+         "type":"Polygon",
+         "kat":"red",
+         "src":"Oelverschmutzung.png",
+         "de":"Oelverschmutzung"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Offizier - Zugfuehrer.png",
+         "de":"Offizier - Zugfuehrer"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Patientensammelstelle.png",
+         "de":"Patientensammelstelle"
+      },
+      {  
+         "type":"Point",
+         "src":"Personenbergungsuebersicht - Leerraster.png",
+         "de":"Personenbergungsuebersicht - Leerraster",
+         "example":"Personenbergungsuebersicht - Beispiel.png"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Pforte.png",
+         "de":"Pforte"
+      },
+      {  
+         "type":"Point",
+         "kat":"red",
+         "src":"Pluenderung.png",
+         "de":"Pluenderung"
+      },
+      {  
+         "type":"Polygon",
+         "kat":"other",
+         "src":"Radioaktives Gebiet.png",
+         "de":"Radioaktives Gebiet"
+      },
+      {  
+         "type":"Point",
+         "kat":"orange",
+         "src":"Radioaktive Stoffe.png",
+         "de":"Radioaktive Stoffe"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Regionales Fuehrungsorgan.png",
+         "de":"Regionales Fuehrungsorgan"
+      },
+      {  
+         "type":"Polygon",
+         "kat":"red",
+         "src":"Rutschgebiet.png",
+         "de":"Rutschgebiet"
+      },
+      {  
+         "type":"Point",
+         "kat":"red",
+         "src":"Sabotage.png",
+         "de":"Sabotage"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Sammelstelle.png",
+         "de":"Sammelstelle"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Sanitaetshilfsstelle.png",
+         "de":"Sanitaetshilfsstelle"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Sanitaetsumladestelle.png",
+         "de":"Sanitaetsumladestelle"
+      },
+      {  
+         "type":"Polygon",
+         "kat":"red",
+         "src":"Schadengebiet - Schadenraum.png",
+         "de":"Schadengebiet - Schadenraum"
+      },
+      {  
+         "type":"LineString",
+         "kat":"blue",
+         "src":"Sperre.png",
+         "de":"Sperre"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Standort mobile Fuehrungsstelle.png",
+         "de":"Standort mobile Fuehrungsstelle"
+      },
+      {  
+         "type":"Point",
+         "kat":"red",
+         "src":"Starkniederschlag.png",
+         "de":"Starkniederschlag"
+      },
+      {  
+         "type":"Polygon",
+         "kat":"red",
+         "src":"Stau.png",
+         "de":"Stau"
+      },
+      {  
+         "type":"LineString",
+         "kat":"red",
+         "src":"Str erschwert befahrbar - begehbar.png",
+         "de":"Str erschwert befahrbar - begehbar",
+         "style":"dash"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Streugutsammelstelle.png",
+         "de":"Streugutsammelstelle"
+      },
+      {  
+         "type":"LineString",
+         "kat":"red",
+         "src":"Str nicht befahrbar - schwer begehbar.png",
+         "de":"Str nicht befahrbar - schwer begehbar"
+      },
+      {  
+         "type":"LineString",
+         "kat":"red",
+         "src":"Str unpassierbar - gesperrt.png",
+         "de":"Str unpassierbar - gesperrt"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Stuetzpunkt.png",
+         "de":"Stuetzpunkt"
+      },
+      {  
+         "type":"Point",
+         "kat":"red",
+         "src":"Sturm.png",
+         "de":"Sturm"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Tankloeschfahrzeug.png",
+         "de":"Tankloeschfahrzeug"
+      },
+      {  
+         "type":"Polygon",
+         "kat":"red",
+         "src":"Teilzerstoerung.png",
+         "de":"Teilzerstoerung"
+      },
+      {  
+         "type":"Point",
+         "kat":"red",
+         "src":"Terroranschlag.png",
+         "de":"Terroranschlag"
+      },
+      {  
+         "type":"Point",
+         "kat":"red",
+         "src":"Tierseuche.png",
+         "de":"Tierseuche"
+      },
+      {  
+         "type":"Polygon",
+         "kat":"red",
+         "src":"Totalzerstoerung.png",
+         "de":"Totalzerstoerung"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Totensammelstelle.png",
+         "de":"Totensammelstelle"
+      },
+      {  
+         "type":"Point",
+         "kat":"red",
+         "src":"Tote.png",
+         "de":"Tote"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Trinkwasserabgabestelle.png",
+         "de":"Trinkwasserabgabestelle"
+      },
+      {  
+         "type":"Polygon",
+         "kat":"red",
+         "src":"Truemmerbereich - Signatur.png",
+         "de":"Truemmerbereich - Signatur",
+         "example":"Truemmerbereich - Beispiel.png"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Trupp.png",
+         "de":"Trupp"
+      },
+      {  
+         "type":"Polygon",
+         "kat":"red",
+         "src":"Ueberschwemmtes Gebiet.png",
+         "de":"Ueberschwemmtes Gebiet"
+      },
+      {  
+         "type":"Polygon",
+         "kat":"red",
+         "src":"Ueberschwemmung.png",
+         "de":"Ueberschwemmung"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Ueberwachung.png",
+         "de":"Ueberwachung"
+      },
+      {  
+         "type":"LineString",
+         "kat":"blue",
+         "src":"Umleitung.png",
+         "de":"Umleitung"
+      },
+      {  
+         "type":"Point",
+         "kat":"orange",
+         "src":"Unfall.png",
+         "de":"Unfall"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Verkehrsposten.png",
+         "de":"Verkehrsposten"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Verletztennest.png",
+         "de":"Verletztennest"
+      },
+      {  
+         "type":"Point",
+         "kat":"red",
+         "src":"Verletzte.png",
+         "de":"Verletzte"
+      },
+      {  
+         "type":"Point",
+         "kat":"red",
+         "src":"Vermisste.png",
+         "de":"Vermisste"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Verpflegungsabgabestelle.png",
+         "de":"Verpflegungsabgabestelle"
+      },
+      {  
+         "type":"Point",
+         "kat":"red",
+         "src":"Wasservsgausfall.png",
+         "de":"Wasserversorgungsausfall"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Wasserwerfer.png",
+         "de":"Wasserwerfer"
+      },
+      {  
+         "type":"Polygon",
+         "kat":"red",
+         "src":"Zerstoerte Zone einer Ortschaft.png",
+         "de":"Zerstoerte Zone einer Ortschaft"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Ziviles Fuehrungsorgan.png",
+         "de":"Ziviles Fuehrungsorgan"
+      },
+      {  
+         "type":"Point",
+         "kat":"blue",
+         "src":"Zug.png",
+         "de":"Zug"
+      }
+   ]
+});

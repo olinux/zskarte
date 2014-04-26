@@ -1,0 +1,22 @@
+{
+  "name": "Zivilschutzkarte",
+  "version": "0.9.0",
+  "authors": [
+    "Oliver Schmid <info@olischmid.ch>"
+  ],
+  "license": "GPLv3",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.2.23",
+    "bootstrap": "~3.2.0",
+    "closurelibrary": "*",
+    "angular-bootstrap": "~0.11.0"
+  }
+}
