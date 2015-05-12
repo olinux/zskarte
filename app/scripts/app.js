@@ -26,15 +26,15 @@ zivilschutz.factory('signatureService', function ($rootScope) {
     signatureService.notifySignatureSelection = function (sig) {
         signatureService.currentSignature = sig;
         $rootScope.$broadcast('signatureSelected');
-    }
+    };
     signatureService.notifyFeatureSelection = function (feature) {
         signatureService.currentFeature = feature;
         $rootScope.$broadcast('featureSelected');
-    }
+    };
     signatureService.deleteFeature = function (feature) {
         signatureService.currentFeature = feature;
         $rootScope.$broadcast('deleteFeature');
-    }
+    };
     return signatureService;
 });
 
@@ -50,7 +50,7 @@ zivilschutz.controller('SignaturenController', ['$scope', '$http', 'signatureSer
     });
     $scope.$on('featureSelected', function () {
         $scope.selectedFeature = signatureService.currentFeature;
-        $scope.selectedSignature = $scope.selectedFeature != undefined ? $scope.selectedFeature.get("sig") : undefined;
+        $scope.selectedSignature = $scope.selectedFeature !== undefined ? $scope.selectedFeature.get('sig') : undefined;
         $scope.$apply();
     });
     $scope.deleteFeature = function (feature) {
@@ -60,7 +60,7 @@ zivilschutz.controller('SignaturenController', ['$scope', '$http', 'signatureSer
     };
     $scope.endModification = function () {
         signatureService.notifyFeatureSelection(undefined);
-    }
+    };
 }]);
 
 zivilschutz.controller('DrawController', ['$scope', '$http', 'signatureService', function ($scope, $http, signatureService) {
@@ -84,7 +84,13 @@ zivilschutz.controller('MapController', ['$scope', '$http', 'signatureService', 
         for (var i = 0; i < element.layers.length; i++) {
             element.layers[i].setVisible(element.toggled);
         }
-    }
+    };
+    $scope.goto = function(provider){
+        window.location.hash='#'+provider;
+        window.location.reload();
+
+    };
+
 
     switchMapProvider(mapprovider, $http, function (zsMap) {
         mainMap = zsMap;
@@ -100,7 +106,7 @@ zivilschutz.controller('MapController', ['$scope', '$http', 'signatureService', 
 
         var exportJPGElement = document.getElementById('export-jpg');
         exportJPGElement.addEventListener('click', function (e) {
-            zsMap.jpgDownload(exportJPGElement)
+            zsMap.jpgDownload(exportJPGElement);
         }, false);
 
         $scope.providers = zsMap.providerList;
@@ -134,7 +140,7 @@ zivilschutz.controller('MapController', ['$scope', '$http', 'signatureService', 
         $scope.selectedFeature = undefined;
     });
 
-    var geocoder = "http://nominatim.openstreetmap.org/search?format=json&q=";
+    var geocoder = 'http://nominatim.openstreetmap.org/search?format=json&q=';
 
     $scope.findPlace = function(){
         $http.get(geocoder+$scope.geocode).success(function(data, status){

@@ -1,3 +1,7 @@
-**/.idea
+node_modules
+dist
+.idea
+.tmp
+.sass-cache
+bower_components
 **/*.iml
-**/bower_components
