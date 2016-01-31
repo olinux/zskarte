@@ -23,6 +23,7 @@ zivilschutz.factory('signatureService', function ($rootScope) {
   var signatureService = {};
   signatureService.currentSignature = undefined;
   signatureService.currentFeature = undefined;
+  signatureService.currentText = undefined;
   signatureService.notifySignatureSelection = function (sig) {
     signatureService.currentSignature = sig;
     $rootScope.$broadcast('signatureSelected');
@@ -97,6 +98,16 @@ zivilschutz.controller('SignaturenController', ['$scope', '$http', 'signatureSer
   $scope.endModification = function () {
     signatureService.notifyFeatureSelection(undefined);
   };
+  $scope.addText = function(){
+    $scope.selectedFeature = undefined;
+    var sig = {
+      "type":"Point",
+      "text":$scope.text,
+      "kat":"blue"
+    };
+    $scope.selectItem(sig);
+    $scope.text = undefined;
+  }
 }]);
 
 zivilschutz.controller('DrawController', ['$scope', '$http', 'signatureService', function ($scope, $http, signatureService) {

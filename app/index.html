@@ -21,10 +21,10 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-  <link rel="stylesheet" href="libs/roundslider/roundslider.min.css" />
+  <link rel="stylesheet" href="libs/roundslider/roundslider.min.css"/>
   <!-- build:css(.) styles/vendor.css -->
   <!-- bower:css -->
-  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"/>
   <!-- endbower -->
   <!-- endbuild -->
   <!-- build:css(.tmp) styles/main.css -->
@@ -33,7 +33,6 @@
 
   <!--<link rel="stylesheet" href="bower_components/openlayers/css/ol.css" type="text/css">
   <link rel="stylesheet" href="styles/signaturen.css"/>-->
-
 
 
 </head>
@@ -57,6 +56,10 @@
 <div ng-controller="MapController">
   <div id="map" class="map" style="position:absolute; top:0; bottom:0; width:100%; overflow:hidden;"></div>
   <div style="position:absolute; top:2em; right:2em;">
+    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#text"><span
+      class="glyphicon glyphicon glyphicon-pencil"/> Text
+    </button>
+
     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#signature"><span
       class="glyphicon glyphicon glyphicon-pencil"/> Zeichnen
     </button>
@@ -129,8 +132,11 @@
   <div ng-controller="SignaturenController">
     <div ng-if="selectedSignature != undefined" id="signaturemenu">
       {{selectedSignature.de}}<br/>
-      <div id="slider"></div><br/>
-      <img id="signaturemenuSymb" src="signaturen/{{selectedSignature.src}}"/>
+
+      <div id="slider"></div>
+      <br/>
+      <img id="signaturemenuSymb" ng-if="selectedSignature.src!==undefined" src="signaturen/{{selectedSignature.src}}"/>
+      <div id="signaturemenuText" ng-if="selectedSignature.src===undefined">Text</div>
       <!--</div>-->
       <!--<div style="height: 5vh;" ng-if="selectedFeature!=undefined">-->
 
@@ -146,27 +152,47 @@
             Signatur auswählen
           </div>
           <div class="modal-body">
+            <div>
+              <div class="input-group">
+                <span class="input-group-addon glyphicon glyphicon-search"></span>
+                <input type="text" ng-model="signaturFilter" placeholder="Signaturen filtern"
+                       class="form-control">
+              </div>
 
-            <div class="input-group">
-              <span class="input-group-addon glyphicon glyphicon-search"></span>
-              <input type="text" ng-model="signaturFilter" placeholder="Signaturen filtern"
-                     class="form-control">
-            </div>
 
-
-            <div class="list-group" style="max-height:70vh; overflow:auto;">
-              <a ng-repeat="signatur in signaturen.signaturen | filter:signaturFilter | orderBy:de"
-                 ng-click="selectItem(signatur);" class="list-group-item"
-                 ng-class="{active :  signatur==selectedSignature}"
-                 ng-if="signatur.src != undefined"><span
-                style="display:inline-block; width:2.5em;"><img
-                src="signaturen/{{signatur.src}}"
-                style="max-height: 2em; max-width: 2em;"/></span>{{signatur.de}}</a>
+              <div class="list-group" style="max-height:70vh; overflow:auto;">
+                <a ng-repeat="signatur in signaturen.signaturen | filter:signaturFilter | orderBy:de"
+                   ng-click="selectItem(signatur);" class="list-group-item"
+                   ng-class="{active :  signatur==selectedSignature}"
+                   ng-if="signatur.src != undefined"><span
+                  style="display:inline-block; width:2.5em;"><img
+                  src="signaturen/{{signatur.src}}"
+                  style="max-height: 2em; max-width: 2em;"/></span>{{signatur.de}}</a>
+              </div>
             </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             <button type="button" class="btn btn-primary" data-dismiss="modal">Weiter</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="text">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            Text hinzufügen
+          </div>
+          <div class="modal-body">
+            <div class="input-group">
+              <textarea ng-model="text" placeholder="Texteingabe" class="form-control"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal"  ng-click="addText()">Weiter</button>
           </div>
         </div>
       </div>

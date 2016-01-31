@@ -65,7 +65,7 @@ div.kategorie.other {
   border-color: transparent;
 }
 
-#signaturemenuSymb {
+#signaturemenuSymb, #signaturemenuText {
   max-height: 60px;
   max-width: 60px;
   position: absolute;
@@ -98,3 +98,7 @@ div.kategorie.other {
   display:inline-block;
   right:1em;
 }
+
+textarea{
+   width:100%;
+ }
