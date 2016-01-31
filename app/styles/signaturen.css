@@ -23,17 +23,21 @@ div.kategorie{
 }
 
 div.kategorie.red{
-	background-color:red;	
+	background-color:red;
 }
 
 div.kategorie.blue{
-	background-color:blue;	
+	background-color:blue;
 }
 
 div.kategorie.orange{
-	background-color:orange;	
+	background-color:orange;
 }
 
 div.kategorie.other{
-	background-color:yellow;	
+	background-color:yellow;
+}
+
+.rs-control .rs-bg-color {
+  background-color: transparent;
 }

@@ -49,6 +49,7 @@ function DrawStyle() {
                     anchorYUnits: 'fraction',
                     scale: scale,
                     opacity: 1,
+                    rotation: feature.get("rotation")!==undefined ? feature.get("rotation")*Math.PI/180 : 0,
                     src: 'signaturen/' + feature.get("sig").src
                 }))
             });
@@ -96,6 +97,7 @@ function DrawStyle() {
                     anchorYUnits: 'fraction',
                     scale: _this.scaleFunction(resolution, defaultScaleFactor),
                     opacity: 1,
+                    rotation: feature.get("rotation")!==undefined ? feature.get("rotation")*Math.PI/180 : 0,
                     src: 'signaturen/' + feature.get("sig").src
                 }))
             });

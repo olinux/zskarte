@@ -32,6 +32,8 @@
   <!--<link rel="stylesheet" href="bower_components/openlayers/css/ol.css" type="text/css">
   <link rel="stylesheet" href="styles/signaturen.css"/>-->
 
+  <link rel="stylesheet" href="libs/roundslider/roundslider.min.css" />
+
 
 </head>
 <body>
@@ -128,10 +130,11 @@
       style="position:absolute; bottom:2em; left:2em; width: 15em; background-color: white; height:10em; text-align: center"
       ng-if="selectedSignature != undefined">
       {{selectedSignature.de}}<br/>
-      <img src="signaturen/{{selectedSignature.src}}"
-           style="max-height: 50%; min-height:50%; max-width: 50%;"/><br/>
+      <div ng-if="selectedFeature!=undefined" id="slider"><img src="signaturen/{{selectedSignature.src}}" style="max-height: 50%; min-height:50%; max-width: 50%;"/></div>
+      <br/>
       <!--</div>-->
       <!--<div style="height: 5vh;" ng-if="selectedFeature!=undefined">-->
+
       <a class="btn btn-info dropdown-toggle clear" ng-click="deleteFeature(selectedFeature);"
          ng-if="selectedFeature!=undefined">Löschen</a>
     </div>
@@ -186,7 +189,8 @@
 
 <!-- build:js({.tmp,app}) scripts/scripts.js -->
 <script src="scripts/app.js"></script>
-<script src="scripts/ol.js" type="text/javascript"></script>
+<script src="libs/openlayers/ol.js" type="text/javascript"></script>
+<script src="libs/roundslider/roundslider.min.js" type="text/javascript"></script>
 <script src="scripts/zskarte/clock.js"></script>
 <script src="scripts/zskarte/drawstyle.js"></script>
 <script src="scripts/zskarte/drawlayer.js"></script>
