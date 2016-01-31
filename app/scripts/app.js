@@ -61,8 +61,7 @@ zivilschutz.controller('SignaturenController', ['$scope', '$http', 'signatureSer
       step: 1,
       value: $scope.selectedFeature.get("rotation"),
       radius: 50,
-      width: 16,
-      handleSize: "+0",
+      width: 5,
       startAngle: 90,
       endAngle: "+360",
       animation: true,
@@ -72,9 +71,10 @@ zivilschutz.controller('SignaturenController', ['$scope', '$http', 'signatureSer
       disabled: false,
       keyboardAction: true,
       mouseScrollAction: false,
-      sliderType: "default",
+      sliderType: "min-range",
       circleShape: "full",
-      handleShape: "round",
+      handleSize: "+16",
+      handleShape: "dot",
 
       // events
       beforeCreate: null,

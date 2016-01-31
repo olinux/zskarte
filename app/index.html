@@ -20,6 +20,8 @@
 <html ng-app="zivilschutz">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+  <link rel="stylesheet" href="libs/roundslider/roundslider.min.css" />
   <!-- build:css(.) styles/vendor.css -->
   <!-- bower:css -->
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
@@ -32,7 +34,6 @@
   <!--<link rel="stylesheet" href="bower_components/openlayers/css/ol.css" type="text/css">
   <link rel="stylesheet" href="styles/signaturen.css"/>-->
 
-  <link rel="stylesheet" href="libs/roundslider/roundslider.min.css" />
 
 
 </head>
@@ -126,17 +127,15 @@
   <div id="status"
        style="position:absolute; bottom:0px; left:0px; height:2em; background-color:white; text-align:center"></div>
   <div ng-controller="SignaturenController">
-    <div
-      style="position:absolute; bottom:2em; left:2em; width: 15em; background-color: white; height:10em; text-align: center"
-      ng-if="selectedSignature != undefined">
+    <div ng-if="selectedSignature != undefined" id="signaturemenu">
       {{selectedSignature.de}}<br/>
-      <div ng-if="selectedFeature!=undefined" id="slider"><img src="signaturen/{{selectedSignature.src}}" style="max-height: 50%; min-height:50%; max-width: 50%;"/></div>
-      <br/>
+      <div id="slider"></div><br/>
+      <img id="signaturemenuSymb" src="signaturen/{{selectedSignature.src}}"/>
       <!--</div>-->
       <!--<div style="height: 5vh;" ng-if="selectedFeature!=undefined">-->
 
       <a class="btn btn-info dropdown-toggle clear" ng-click="deleteFeature(selectedFeature);"
-         ng-if="selectedFeature!=undefined">Löschen</a>
+         ng-if="selectedFeature!=undefined" id="deletebutton">Löschen</a>
     </div>
 
 

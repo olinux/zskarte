@@ -17,27 +17,84 @@
  * along with Zivilschutzkarte.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-div.kategorie{
-	height: 10px;
-	width: 20px;
+div.kategorie {
+  height: 10px;
+  width: 20px;
 }
 
-div.kategorie.red{
-	background-color:red;
+div.kategorie.red {
+  background-color: red;
 }
 
-div.kategorie.blue{
-	background-color:blue;
+div.kategorie.blue {
+  background-color: blue;
 }
 
-div.kategorie.orange{
-	background-color:orange;
+div.kategorie.orange {
+  background-color: orange;
 }
 
-div.kategorie.other{
-	background-color:yellow;
+div.kategorie.other {
+  background-color: yellow;
 }
 
-.rs-control .rs-bg-color {
-  background-color: transparent;
+.rs-range-color {
+  background-color: #33B5E5;
+}
+
+.rs-path-color {
+  background-color: #C2E9F7;
+}
+
+.rs-handle {
+  background-color: #C2E9F7;
+  padding: 7px;
+  border: 2px solid #C2E9F7;
+}
+
+.rs-handle.rs-focus {
+  border-color: #33B5E5;
+}
+
+.rs-handle:after {
+  border-color: #33B5E5;
+  background-color: #33B5E5;
+}
+
+.rs-border {
+  border-color: transparent;
+}
+
+#signaturemenuSymb {
+  max-height: 60px;
+  max-width: 60px;
+  position: absolute;
+  z-index:300;
+  top:4em;
+  left:2.5em;
+
+}
+
+#signaturemenu {
+  position: absolute;
+  bottom: 2em;
+  left: 2em;
+  width: 15em;
+  background-color: white;
+  height: 10em;
+  text-align: center
+}
+
+#slider{
+  position:absolute;
+  top:2.5em;
+  display:inline-block;
+  left:1em;
+}
+
+#deletebutton{
+  position:absolute;
+  top:4.5em;
+  display:inline-block;
+  right:1em;
 }
