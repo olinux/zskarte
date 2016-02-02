@@ -79,90 +79,16 @@ zivilschutz.controller('SmartboardController', ['$scope', '$http', 'signatureSer
 }]);
 
 
-zivilschutz.controller('SignaturenController', ['$scope', '$http', 'signatureService', function ($scope, $http, signatureService) {
-
-  window.loadSignaturen = function (data) {
-    $scope.signaturen = data;
-  };
-  $http.jsonp('signaturen/signaturen.jsonp');
-  $scope.selectItem = signatureService.notifySignatureSelection;
-  $scope.$on('signatureSelected', function () {
-    $scope.selectedSignature = signatureService.currentSignature;
-
-  });
-
-  $scope.$on('colorFilter', function (evt, args) {
-    $scope.colorfilter = args;
-    $scope.$apply();
-  });
-
-
-  $scope.$on('featureSelected', function () {
-    $scope.selectedFeature = signatureService.currentFeature;
-    $scope.selectedSignature = $scope.selectedFeature !== undefined ? $scope.selectedFeature.get('sig') : undefined;
-    $scope.$apply();
-    var slider = document.getElementById('slider');
-    var sliderConfig = {
-      min: 0,
-      max: 360,
-      step: 1,
-      value: $scope.selectedFeature !== undefined ? $scope.selectedFeature.get("rotation") : 0,
-      radius: 50,
-      width: 5,
-      startAngle: 90,
-      endAngle: "+360",
-      animation: true,
-      showTooltip: false,
-      editableTooltip: false,
-      readOnly: false,
-      disabled: false,
-      keyboardAction: true,
-      mouseScrollAction: false,
-      sliderType: "min-range",
-      circleShape: "full",
-      handleSize: "+16",
-      handleShape: "dot",
-
-      // events
-      beforeCreate: null,
-      create: null,
-      start: null,
-      drag: function (x) {
-        $scope.selectedFeature.set("rotation", x.value);
-        $scope.selectedFeature.changed();
-      },
-      change: null,
-      stop: null,
-      tooltipFormat: null
-    };
-    $(slider).roundSlider(sliderConfig);
-  });
-  $scope.deleteFeature = function (feature) {
-    $scope.selectedFeature = undefined;
-    $scope.selectedSignature = undefined;
-    signatureService.deleteFeature(feature);
-  };
-  $scope.endModification = function () {
-    signatureService.notifyFeatureSelection(undefined);
-  };
-  $scope.addText = function () {
-    $scope.selectedFeature = undefined;
-    var sig = {
-      "type": "Point",
-      "text": $scope.text
-    };
-    $scope.selectItem(sig);
-    $scope.text = undefined;
-  }
-}]);
-
 zivilschutz.controller('MapController', ['$scope', '$http', 'signatureService', function ($scope, $http, signatureService) {
   var drawLayer = new DrawLayer(
     function (selectedElement) {
       signatureService.notifyFeatureSelection(selectedElement);
     }
   );
+  var clock = new Clock(document.getElementById('clock'));
+
   var mainMap;
+  $scope.historyChooser = "live";
 
   $scope.toggleLayer = function (element) {
     for (var i = 0; i < element.layers.length; i++) {
@@ -179,7 +105,29 @@ zivilschutz.controller('MapController', ['$scope', '$http', 'signatureService', 
     if (window.confirm("Sind Sie sicher, dass Sie alle Elemente löschen möchten?")) {
       drawLayer.removeAll();
     }
-  }
+  };
+  $scope.historyChange = function () {
+    if ($scope.isHistory) {
+      drawLayer.getFromHistoryPercentual($scope.history);
+    }
+  };
+
+  $scope.toggleHistory = function () {
+    if ($scope.isHistory) {
+      $scope.isHistory = false;
+      drawLayer.gotoLive();
+    }
+    else {
+      $scope.history = 100;
+      $scope.isHistory = true;
+      $scope.historyChange();
+      var date = drawLayer.getFirstDateInHistory();
+      if(date!=null) {
+        date = date.getDay() + "." + date.getMonth() + "." + date.getFullYear() + " " +date.getHours()+":"+date.getMinutes();
+      }
+      $scope.historyStart = date;
+    }
+  };
 
   $scope.$watch('symbolfilter', function (value) {
     drawLayer.filterFeatures(value);
@@ -192,9 +140,6 @@ zivilschutz.controller('MapController', ['$scope', '$http', 'signatureService', 
   switchMapProvider(mapprovider, $http, function (zsMap) {
     mainMap = zsMap;
     drawLayer.initMap(zsMap);
-
-    var clock = new Clock(document.getElementById('clock'));
-
 
     var exportLink = document.getElementById('export');
     exportLink.addEventListener('click', function () {
@@ -257,6 +202,85 @@ zivilschutz.controller('MapController', ['$scope', '$http', 'signatureService', 
         drawLayer.loadFromString(evt.target.result);
       }
     }
+  }
+}]);
+
+zivilschutz.controller('SignaturenController', ['$scope', '$http', 'signatureService', function ($scope, $http, signatureService) {
+
+  window.loadSignaturen = function (data) {
+    $scope.signaturen = data;
+  };
+  $http.jsonp('signaturen/signaturen.jsonp');
+  $scope.selectItem = signatureService.notifySignatureSelection;
+  $scope.$on('signatureSelected', function () {
+    $scope.selectedSignature = signatureService.currentSignature;
+
+  });
+
+  $scope.$on('colorFilter', function (evt, args) {
+    $scope.colorfilter = args;
+    $scope.$apply();
+  });
+
+
+  $scope.$on('featureSelected', function () {
+    if (!$scope.isHistory) {
+      $scope.selectedFeature = signatureService.currentFeature;
+      $scope.selectedSignature = $scope.selectedFeature !== undefined ? $scope.selectedFeature.get('sig') : undefined;
+      $scope.$apply();
+      var slider = document.getElementById('slider');
+      var sliderConfig = {
+        min: 0,
+        max: 360,
+        step: 1,
+        value: $scope.selectedFeature !== undefined ? $scope.selectedFeature.get("rotation") : 0,
+        radius: 50,
+        width: 5,
+        startAngle: 90,
+        endAngle: "+360",
+        animation: true,
+        showTooltip: false,
+        editableTooltip: false,
+        readOnly: false,
+        disabled: false,
+        keyboardAction: true,
+        mouseScrollAction: false,
+        sliderType: "min-range",
+        circleShape: "full",
+        handleSize: "+16",
+        handleShape: "dot",
+
+        // events
+        beforeCreate: null,
+        create: null,
+        start: null,
+        drag: function (x) {
+          $scope.selectedFeature.set("rotation", x.value);
+          $scope.selectedFeature.changed();
+        },
+        change: null,
+        stop: null,
+        tooltipFormat: null
+      };
+      $(slider).roundSlider(sliderConfig);
+    }
+  } );
+  $scope.deleteFeature = function (feature) {
+    $scope.selectedFeature = undefined;
+    $scope.selectedSignature = undefined;
+    signatureService.deleteFeature(feature);
+  };
+  $scope.endModification = function () {
+    signatureService.notifyFeatureSelection(undefined);
+  };
+  $scope.addText = function () {
+    $scope.selectedFeature = undefined;
+    var sig = {
+      "type": "Point",
+      "text": $scope.text
+    };
+    $scope.selectItem(sig);
+    $scope.text = undefined;
   }
 }]);
 

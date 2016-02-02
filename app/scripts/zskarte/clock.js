@@ -30,7 +30,7 @@ function Clock(clockElement) {
         var t = setTimeout(function () {
             update()
         }, 1000);
-    }
+    };
 
     function normalize(i) {
         if (i < 10) {
@@ -39,4 +39,6 @@ function Clock(clockElement) {
         return i;
     }
     update();
+
+
 }

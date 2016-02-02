@@ -34,6 +34,7 @@ function DrawLayer(selectionHandler) {
   this.modify = new ol.interaction.Modify({
     features: this.select.getFeatures()
   });
+  this.historyDate = undefined;
   this.selectionChanged = function () {
     if (_this.select.getFeatures().getLength() == 1) {
       _this.selectionHandler(_this.select.getFeatures().item(0));
@@ -62,39 +63,45 @@ function DrawLayer(selectionHandler) {
     _this.layer.changed();
   };
 
+ this.inhistory = function(){
+   return _this.historyDate !==undefined;
+ }
+
   this.selectorHandler = function (e) {
-    _this.select.getFeatures().clear();
-    var f = _this.source.getClosestFeatureToCoordinate(e.coordinate);
-    var threshold = 40;
-    var ext = f.getGeometry().getExtent();
-    var vmax = Math.max(ext[1], ext[3]);
-    var vmin = Math.min(ext[1], ext[3]);
-    var hmax = Math.max(ext[0], ext[2]);
-    var hmin = Math.min(ext[0], ext[2]);
+    if(!_this.inhistory()) {
+      _this.select.getFeatures().clear();
+      var f = _this.source.getClosestFeatureToCoordinate(e.coordinate);
+      var threshold = 40;
+      var ext = f.getGeometry().getExtent();
+      var vmax = Math.max(ext[1], ext[3]);
+      var vmin = Math.min(ext[1], ext[3]);
+      var hmax = Math.max(ext[0], ext[2]);
+      var hmin = Math.min(ext[0], ext[2]);
 
-    var select = false;
-    //Is inside?
-    var vdist = vmax - e.coordinate[1];
-    var hdist = hmax - e.coordinate[0];
+      var select = false;
+      //Is inside?
+      var vdist = vmax - e.coordinate[1];
+      var hdist = hmax - e.coordinate[0];
 
-    if (vdist > 0 && hdist > 0 && vdist < vmax - vmin && hdist < hmax - hmin) {
-      select = true;
-    }
-    else {
-      var vdiff = Math.min(Math.abs(vmax - e.coordinate[1]), Math.abs(vmin - e.coordinate[1]));
-      var hdiff = Math.min(Math.abs(hmax - e.coordinate[0]), Math.abs(hmin - e.coordinate[0]));
-      if (hdiff < threshold && vdiff < threshold) {
+      if (vdist > 0 && hdist > 0 && vdist < vmax - vmin && hdist < hmax - hmin) {
         select = true;
       }
-    }
+      else {
+        var vdiff = Math.min(Math.abs(vmax - e.coordinate[1]), Math.abs(vmin - e.coordinate[1]));
+        var hdiff = Math.min(Math.abs(hmax - e.coordinate[0]), Math.abs(hmin - e.coordinate[0]));
+        if (hdiff < threshold && vdiff < threshold) {
+          select = true;
+        }
+      }
 
-    if (select) {
-      _this.select.getFeatures().push(f);
+      if (select) {
+        _this.select.getFeatures().push(f);
+      }
+      else {
+        _this.select.getFeatures().clear();
+      }
+      _this.selectionChanged();
     }
-    else {
-      _this.select.getFeatures().clear();
-    }
-    _this.selectionChanged();
   };
 
   this.initMap = function (map) {
@@ -127,48 +134,88 @@ function DrawLayer(selectionHandler) {
   };
 
   this.removeAll = function(){
-    localStorage.removeItem("map");
-    _this.source.clear();
-    _this.select.getFeatures().clear();
+    if(!_this.inhistory()) {
+      localStorage.removeItem("map");
+      _this.source.clear();
+      _this.select.getFeatures().clear();
+    }
   }
 
 
   this.save = function () {
-    var previouslyStored = localStorage.getItem("map");
-    var now = writeFeatures();
-    if (now !== previouslyStored) {
-      localStorage.setItem("map", now);
-      var history = localStorage.getItem("mapold");
-      if (history === null) {
-        history = {"elements": []};
+    if(!_this.inhistory()) {
+      var previouslyStored = localStorage.getItem("map");
+      var now = writeFeatures();
+      if (now !== previouslyStored) {
+        localStorage.setItem("map", now);
+        var history = localStorage.getItem("mapold");
+        if (history === null) {
+          history = {"elements": []};
+        }
+        else {
+          history = JSON.parse(history);
+        }
+        history.elements.push({"time": new Date(), "content": now});
+        localStorage.setItem("mapold", JSON.stringify(history));
       }
-      else {
-        history = JSON.parse(history);
+    }
+  };
+
+  this.gotoLive = function(){
+    _this.getFromHistory(new Date());
+    _this.historyDate=undefined;
+    _this.map.map.addInteraction(_this.select);
+    _this.map.map.addInteraction(_this.modify);
+  };
+
+  this.getFirstDateInHistory = function(){
+    var history = localStorage.getItem("mapold");
+    if (history !== null) {
+      history = JSON.parse(history);
+      if (history.elements.length > 0) {
+       return new Date(history.elements[0].time);
       }
-      history.elements.push({"time": new Date(), "content": now});
-      localStorage.setItem("mapold", JSON.stringify(history));
+    }
+    return null;
+  };
+
+  this.getFromHistoryPercentual = function(perc){
+    if(perc!==undefined) {
+      _this.save();
+      var firstDateInHistory = _this.getFirstDateInHistory();
+      if(firstDateInHistory!=null){
+        var now = new Date();
+        var diff = now - firstDateInHistory;
+        var diffToNow = Math.floor(diff / 100 * (100 - perc));
+        var historyDate = new Date(now - diffToNow);
+        _this.getFromHistory(historyDate);
+      }
     }
   };
 
   this.getFromHistory = function (date) {
     var history = localStorage.getItem("mapold");
     if (history !== null) {
+      _this.map.map.removeInteraction(_this.select);
+      _this.map.map.removeInteraction(_this.modify);
+      _this.historyDate = date;
       history = JSON.parse(history);
       for (var i = history.elements.length; i > 0; i--) {
         var element = history.elements[i - 1];
-        if (date > element.time) {
-          loadElements(element.content);
+        if (date > new Date(element.time)) {
+          _this.loadElements(JSON.parse(element.content));
           break;
         }
       }
     }
   };
 
+
   this.loadFromString = function (text) {
-    loadElements(JSON.parse(text));
+    _this.loadElements(JSON.parse(text));
   };
 
-  var loadElements = function (elements) {
+  this.loadElements = function (elements) {
     _this.source.clear();
     _this.select.getFeatures().clear();
     if (elements !== null) {
@@ -183,7 +230,12 @@ function DrawLayer(selectionHandler) {
   };
 
   this.load = function () {
-    var items = localStorage.getItem("map");
+    if(_this.inhistory) {
+      var items = localStorage.getItem("map");
+    }
+    else{
+
+    }
     if (items !== null) {
       _this.loadFromString(items);
     }

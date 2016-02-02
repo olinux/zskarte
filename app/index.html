@@ -17,7 +17,7 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with Zivilschutzkarte.  If not, see <http://www.gnu.org/licenses/>.
   -->
-<html ng-app="zivilschutz">
+<html ng-app="zivilschutz" ng-cloak >
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
@@ -61,16 +61,16 @@
       </div>
     </div>
   </div>
-
   <div ng-controller="MapController">
+    <div id="clock" style="position:absolute; top:1em; left:3em; background-color:white; text-align:center; z-index:2000;"></div>
     <div id="map" class="map" style="position:absolute; top:0; bottom:0; width:100%; overflow:hidden;"></div>
     <div style="position:absolute; top:2em; right:2em;">
 
-      <button type="button" class="btn btn-info" data-toggle="modal" data-target="#text"><span
-        class="glyphicon glyphicon glyphicon-font"/> Text
+      <button type="button" class="btn btn-info" data-toggle="modal" data-target="#text"  ng-hide="isHistory"><span
+        class="glyphicon glyphicon glyphicon-font" /> Text
       </button>
 
-      <button type="button" class="btn btn-info" data-toggle="modal" data-target="#signature"><span
+      <button type="button" class="btn btn-info" data-toggle="modal" data-target="#signature" ng-hide="isHistory"><span
         class="glyphicon glyphicon glyphicon-pencil"/> Zeichnen
       </button>
 
@@ -105,6 +105,27 @@
         </ul>
       </div>
 
+
+      <div class="btn-group">
+        <button type="button" class="btn btn-info"><span
+          class="glyphicon glyphicon-folder-open"/> Karte
+        </button>
+        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+          <li><a data-toggle="modal" data-target="#loadFromFileDialog" ng-hide="isHistory"><span class="glyphicon glyphicon glyphicon-upload" /> Importieren</a></li>
+          <li><a download="features.json" id="export" ng-hide="isHistory"><span class="glyphicon glyphicon glyphicon-download" /> Herunterladen</a></li>
+          <li><a id="export-jpg" download="map.jpg"><span class="glyphicon glyphicon glyphicon-picture"/> Screenshot</a></li>
+          <li><a data-toggle="button" ng-click="toggleHistory()" ng-hide="isHistory"><span
+            class="glyphicon glyphicon glyphicon-time"/> History</a></li>
+          <li><a ng-click="removeAll()" ng-hide="isHistory"><span
+            class="glyphicon glyphicon glyphicon-trash"/> Löschen
+          </a></li>
+        </ul>
+      </div>
+
+
       <div class="btn-group">
         <button type="button" class="btn btn-info"><span
           class="glyphicon glyphicon-eye-open"/> Layers
@@ -127,22 +148,11 @@
           </li>
         </ul>
       </div>
-      <div class="btn-group">
-        <button type="button" class="btn btn-info"><span
-          class="glyphicon glyphicon-folder-open"/> Karte
-        </button>
-        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-          <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" role="menu">
-          <li><a data-toggle="modal" data-target="#loadFromFileDialog">Import GeoJSON</a></li>
-          <li><a download="features.json" id="export">Export GeoJSON</a></li>
-          <li><a id="export-jpg" download="map.jpg">Export JPEG</a></li>
-        </ul>
-      </div>
-      <button type="button" class="btn btn-info" ng-click="removeAll()"><span
-        class="glyphicon glyphicon glyphicon-trash"/> Löschen
-      </button>
+
+
+
+
+
     </div>
     <div id="geocoder" class="input-group" style="position:absolute; top:1em; left:10em; width:20vw;">
       <span class="input-group-addon glyphicon glyphicon-search" ng-click="findPlace()"></span>
@@ -151,6 +161,13 @@
         <input type="text" ng-model="geocode" placeholder="Ort finden" class="form-control">
       </form>
 
+    </div>
+    <div id="history" class="input-group" style="position:absolute; bottom:3em; left:10vw; width:80vw; background-color:white; padding:1em; text-align:center;" ng-show="isHistory">
+
+      <input type="range" name="points" min="0" max="100" value="100" ng-model="history" ng-change="historyChange()" style="margin-top:1em;" >
+      <div style="position:absolute; left:1em; top:0px;">{{historyStart}}</div>
+      <div style="position:absolute; right:1em; top:0px;">Jetzt</div>
+      <button type="button" class="btn btn-primary" ng-click="toggleHistory()">History-Modus beenden</button>
     </div>
     <div class="modal fade" id="loadFromFileDialog">
       <div class="modal-dialog">
@@ -170,11 +187,11 @@
       </div>
     </div>
 
-    <div id="clock" style="position:absolute; top:1em; left:3em; background-color:white; text-align:center"></div>
+
     <div id="status"
          style="position:absolute; bottom:0px; left:0px; height:2em; background-color:white; text-align:center"></div>
     <div ng-controller="SignaturenController">
-      <div ng-if="selectedSignature != undefined" id="signaturemenu">
+      <div ng-if="selectedSignature != undefined" id="signaturemenu" ng-hide="isHistory">
         {{selectedSignature.de}}<br/>
 
         <div id="slider"></div>

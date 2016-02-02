@@ -261,4 +261,4 @@ function DrawStyle() {
 
 DrawStyle.prototype.scaleFunction = function (resolution, scaleFactor) {
   return scaleFactor * Math.sqrt(0.5 * resolution) / resolution;
-}
+};

@@ -57,15 +57,15 @@ function ZsMap(map, layers, projectionFunction) {
 
 var getCoordinatesProjection = function(){
     return ol.proj.get('EPSG:4326');
-}
+};
 
 var getMercatorProjection = function(){
     return ol.proj.get('EPSG:3857');
-}
+};
 
 var getSwissProjection = function(){
     return ol.proj.get('EPSG:21781');
-}
+};
 
 
 
