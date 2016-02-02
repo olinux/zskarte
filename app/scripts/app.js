@@ -44,36 +44,36 @@ zivilschutz.factory('signatureService', function ($rootScope) {
 });
 
 
-zivilschutz.controller('SmartboardController', ['$scope', '$http', 'signatureService','$rootScope', function ($scope, $http, signatureService, $rootScope) {
+zivilschutz.controller('SmartboardController', ['$scope', '$http', 'signatureService', '$rootScope', function ($scope, $http, signatureService, $rootScope) {
   //SB.wantsTouches = true;
   SB.initializeSMARTBoard();
 
   var green = "#009300";
-  var red  = "#ff0000";
+  var red = "#ff0000";
   var blue = "#0000ff";
   var black = "#000000";
 
-  var htmlColorToFilter = function(color){
-    switch(color){
+  var htmlColorToFilter = function (color) {
+    switch (color) {
       case green:
-            return orangeFilter;
+        return orangeFilter;
       case red:
-            return redFilter;
+        return redFilter;
       case blue:
-            return blueFilter;
+        return blueFilter;
       default:
-            return undefined;
+        return undefined;
     }
   };
 
-    // set up tool change event handler
-  SB.onToolChange = function(evt) {
-    if(evt.colorAsHTML!==undefined) {
+  // set up tool change event handler
+  SB.onToolChange = function (evt) {
+    if (evt.colorAsHTML !== undefined) {
       $rootScope.$broadcast('colorFilter', htmlColorToFilter(evt.colorAsHTML));
       $("#smartboardconnector").css("background", evt.colorAsHTML);
     }
   };
-  SB.statusChanged = function(status){
+  SB.statusChanged = function (status) {
     $("#smartboardconnector").text(status);
   };
 }]);
@@ -91,7 +91,7 @@ zivilschutz.controller('SignaturenController', ['$scope', '$http', 'signatureSer
 
   });
 
-  $scope.$on('colorFilter', function(evt, args){
+  $scope.$on('colorFilter', function (evt, args) {
     $scope.colorfilter = args;
     $scope.$apply();
   });
@@ -106,7 +106,7 @@ zivilschutz.controller('SignaturenController', ['$scope', '$http', 'signatureSer
       min: 0,
       max: 360,
       step: 1,
-      value: $scope.selectedFeature!==undefined ? $scope.selectedFeature.get("rotation") : 0,
+      value: $scope.selectedFeature !== undefined ? $scope.selectedFeature.get("rotation") : 0,
       radius: 50,
       width: 5,
       startAngle: 90,
@@ -145,11 +145,11 @@ zivilschutz.controller('SignaturenController', ['$scope', '$http', 'signatureSer
   $scope.endModification = function () {
     signatureService.notifyFeatureSelection(undefined);
   };
-  $scope.addText = function(){
+  $scope.addText = function () {
     $scope.selectedFeature = undefined;
     var sig = {
-      "type":"Point",
-      "text":$scope.text
+      "type": "Point",
+      "text": $scope.text
     };
     $scope.selectItem(sig);
     $scope.text = undefined;
@@ -175,12 +175,18 @@ zivilschutz.controller('MapController', ['$scope', '$http', 'signatureService', 
 
   };
 
-  $scope.$watch('symbolfilter', function(value) {
+  $scope.removeAll = function () {
+    if (window.confirm("Sind Sie sicher, dass Sie alle Elemente löschen möchten?")) {
+      drawLayer.removeAll();
+    }
+  }
+
+  $scope.$watch('symbolfilter', function (value) {
     drawLayer.filterFeatures(value);
   });
 
-  $scope.$on('colorFilter', function(evt, args){
-    $scope.symbolfilter=args;
+  $scope.$on('colorFilter', function (evt, args) {
+    $scope.symbolfilter = args;
   });
 
   switchMapProvider(mapprovider, $http, function (zsMap) {

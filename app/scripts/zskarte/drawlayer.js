@@ -126,6 +126,12 @@ function DrawLayer(selectionHandler) {
     return 'data:text/json;charset=UTF-8,' + encodeURIComponent(writeFeatures());
   };
 
+  this.removeAll = function(){
+    localStorage.removeItem("map");
+    _this.source.clear();
+    _this.select.getFeatures().clear();
+  }
+
 
   this.save = function () {
     var previouslyStored = localStorage.getItem("map");

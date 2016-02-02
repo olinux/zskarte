@@ -67,7 +67,7 @@
     <div style="position:absolute; top:2em; right:2em;">
 
       <button type="button" class="btn btn-info" data-toggle="modal" data-target="#text"><span
-        class="glyphicon glyphicon glyphicon-pencil"/> Text
+        class="glyphicon glyphicon glyphicon-font"/> Text
       </button>
 
       <button type="button" class="btn btn-info" data-toggle="modal" data-target="#signature"><span
@@ -76,7 +76,7 @@
 
       <div class="btn-group">
         <button type="button" class="btn btn-info"><span
-          class="glyphicon glyphicon-eye-open"/> Filter
+          class="glyphicon glyphicon-filter"/> Filter
         </button>
         <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
           <span class="caret"></span>
@@ -140,7 +140,9 @@
           <li><a id="export-jpg" download="map.jpg">Export JPEG</a></li>
         </ul>
       </div>
-
+      <button type="button" class="btn btn-info" ng-click="removeAll()"><span
+        class="glyphicon glyphicon glyphicon-trash"/> Löschen
+      </button>
     </div>
     <div id="geocoder" class="input-group" style="position:absolute; top:1em; left:10em; width:20vw;">
       <span class="input-group-addon glyphicon glyphicon-search" ng-click="findPlace()"></span>

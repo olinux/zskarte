@@ -33,13 +33,12 @@ function DrawStyle() {
   var textScaleFactor = 1.2
   this.filter = undefined;
 
-  this.isFeatureFiltered = function(feature){
-    return _this.filter!==undefined && _this.filter!==feature.get("sig").kat;
+  this.isFeatureFiltered = function (feature) {
+    return _this.filter !== undefined && _this.filter !== feature.get("sig").kat;
   };
 
   this.styleFunctionSelect = function (feature, resolution) {
-
-    if (feature.get("sig") != undefined) {
+    if (feature.get("sig") !== undefined) {
       var isText = feature.get("sig").src === undefined;
       var scale = _this.scaleFunction(resolution, defaultScaleFactor);
       var style = !isText ? new ol.style.Style({
@@ -73,8 +72,9 @@ function DrawStyle() {
           fill: new ol.style.Fill({
             color: 'black'
           }),
-        })});
-      var style2 = new ol.style.Style({
+        })
+      });
+      var style2 = !isText ? new ol.style.Style({
         stroke: new ol.style.Stroke({
           color: [255, 255, 255, 0.7],
           width: scale * 20
@@ -88,13 +88,13 @@ function DrawStyle() {
             color: _this.colorFunction(feature.get("sig").kat, "highlight", 0.9)
           })
         })
-      });
-      var style3 = new ol.style.Style({
+      }) : undefined;
+      var style3 = !isText ? new ol.style.Style({
         stroke: new ol.style.Stroke({
           color: _this.colorFunction(feature.get("sig").kat, "highlight"),
           width: scale * 30
         })
-      });
+      }) : undefined;
 
       return isText ? style : [style3, style2, style];
     }
@@ -102,15 +102,15 @@ function DrawStyle() {
 
 
   this.styleFunction = function (feature, resolution) {
-    if(_this.isFeatureFiltered(feature)){
+    if (_this.isFeatureFiltered(feature)) {
       return [];
     }
-    if (feature.get("sig") != undefined) {
+    if (feature.get("sig") !== undefined) {
       var isText = feature.get("sig").src === undefined;
 
       var scale = _this.scaleFunction(resolution, defaultScaleFactor);
       var style =
-       !isText ?
+        !isText ?
           new ol.style.Style({
             stroke: new ol.style.Stroke({
               color: _this.colorFunction(feature.get("sig").kat, "default"),
