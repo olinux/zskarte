@@ -19,11 +19,15 @@
 
 var zivilschutz = angular.module('zivilschutz', ['ui.bootstrap']);
 
+var orangeFilter = 'orange';
+var redFilter = 'red';
+var blueFilter = 'blue';
+
+
 zivilschutz.factory('signatureService', function ($rootScope) {
   var signatureService = {};
   signatureService.currentSignature = undefined;
   signatureService.currentFeature = undefined;
-  signatureService.currentText = undefined;
   signatureService.notifySignatureSelection = function (sig) {
     signatureService.currentSignature = sig;
     $rootScope.$broadcast('signatureSelected');
@@ -40,6 +44,41 @@ zivilschutz.factory('signatureService', function ($rootScope) {
 });
 
 
+zivilschutz.controller('SmartboardController', ['$scope', '$http', 'signatureService','$rootScope', function ($scope, $http, signatureService, $rootScope) {
+  //SB.wantsTouches = true;
+  SB.initializeSMARTBoard();
+
+  var green = "#009300";
+  var red  = "#ff0000";
+  var blue = "#0000ff";
+  var black = "#000000";
+
+  var htmlColorToFilter = function(color){
+    switch(color){
+      case green:
+            return orangeFilter;
+      case red:
+            return redFilter;
+      case blue:
+            return blueFilter;
+      default:
+            return undefined;
+    }
+  };
+
+    // set up tool change event handler
+  SB.onToolChange = function(evt) {
+    if(evt.colorAsHTML!==undefined) {
+      $rootScope.$broadcast('colorFilter', htmlColorToFilter(evt.colorAsHTML));
+      $("#smartboardconnector").css("background", evt.colorAsHTML);
+    }
+  };
+  SB.statusChanged = function(status){
+    $("#smartboardconnector").text(status);
+  };
+}]);
+
+
 zivilschutz.controller('SignaturenController', ['$scope', '$http', 'signatureService', function ($scope, $http, signatureService) {
 
   window.loadSignaturen = function (data) {
@@ -51,16 +90,23 @@ zivilschutz.controller('SignaturenController', ['$scope', '$http', 'signatureSer
     $scope.selectedSignature = signatureService.currentSignature;
 
   });
+
+  $scope.$on('colorFilter', function(evt, args){
+    $scope.colorfilter = args;
+    $scope.$apply();
+  });
+
+
   $scope.$on('featureSelected', function () {
     $scope.selectedFeature = signatureService.currentFeature;
     $scope.selectedSignature = $scope.selectedFeature !== undefined ? $scope.selectedFeature.get('sig') : undefined;
     $scope.$apply();
     var slider = document.getElementById('slider');
-    $(slider).roundSlider({
+    var sliderConfig = {
       min: 0,
       max: 360,
       step: 1,
-      value: $scope.selectedFeature.get("rotation"),
+      value: $scope.selectedFeature!==undefined ? $scope.selectedFeature.get("rotation") : 0,
       radius: 50,
       width: 5,
       startAngle: 90,
@@ -88,7 +134,8 @@ zivilschutz.controller('SignaturenController', ['$scope', '$http', 'signatureSer
       change: null,
       stop: null,
       tooltipFormat: null
-    });
+    };
+    $(slider).roundSlider(sliderConfig);
   });
   $scope.deleteFeature = function (feature) {
     $scope.selectedFeature = undefined;
@@ -102,24 +149,14 @@ zivilschutz.controller('SignaturenController', ['$scope', '$http', 'signatureSer
     $scope.selectedFeature = undefined;
     var sig = {
       "type":"Point",
-      "text":$scope.text,
-      "kat":"blue"
+      "text":$scope.text
     };
     $scope.selectItem(sig);
     $scope.text = undefined;
   }
 }]);
 
-zivilschutz.controller('DrawController', ['$scope', '$http', 'signatureService', function ($scope, $http, signatureService) {
-  $scope.$on('signatureSelected', function () {
-    $scope.selectedSignature = signatureService.currentSignature;
-    $scope.selectedFeature = undefined;
-  });
-}]);
-
-
 zivilschutz.controller('MapController', ['$scope', '$http', 'signatureService', function ($scope, $http, signatureService) {
-
   var drawLayer = new DrawLayer(
     function (selectedElement) {
       signatureService.notifyFeatureSelection(selectedElement);
@@ -138,6 +175,13 @@ zivilschutz.controller('MapController', ['$scope', '$http', 'signatureService', 
 
   };
 
+  $scope.$watch('symbolfilter', function(value) {
+    drawLayer.filterFeatures(value);
+  });
+
+  $scope.$on('colorFilter', function(evt, args){
+    $scope.symbolfilter=args;
+  });
 
   switchMapProvider(mapprovider, $http, function (zsMap) {
     mainMap = zsMap;
@@ -208,4 +252,12 @@ zivilschutz.controller('MapController', ['$scope', '$http', 'signatureService', 
       }
     }
   }
+}]);
+
+
+zivilschutz.controller('DrawController', ['$scope', '$http', 'signatureService', function ($scope, $http, signatureService) {
+  $scope.$on('signatureSelected', function () {
+    $scope.selectedSignature = signatureService.currentSignature;
+    $scope.selectedFeature = undefined;
+  });
 }]);

@@ -57,6 +57,11 @@ function DrawLayer(selectionHandler) {
 
   this.source.on('addfeature', this.selectionChanged);
 
+  this.filterFeatures=function(filter){
+    _this.style.filter=filter;
+    _this.layer.changed();
+  };
+
   this.selectorHandler = function (e) {
     _this.select.getFeatures().clear();
     var f = _this.source.getClosestFeatureToCoordinate(e.coordinate);
@@ -115,7 +120,7 @@ function DrawLayer(selectionHandler) {
     }
 
     return json;
-  }
+  };
 
   this.toDataUrl = function () {
     return 'data:text/json;charset=UTF-8,' + encodeURIComponent(writeFeatures());
@@ -151,11 +156,11 @@ function DrawLayer(selectionHandler) {
         }
       }
     }
-  }
+  };
 
   this.loadFromString = function (text) {
     loadElements(JSON.parse(text));
-  }
+  };
 
   var loadElements = function (elements) {
     _this.source.clear();
@@ -169,7 +174,7 @@ function DrawLayer(selectionHandler) {
       }
       _this.source.addFeatures(features)
     }
-  }
+  };
 
   this.load = function () {
     var items = localStorage.getItem("map");

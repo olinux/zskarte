@@ -31,8 +31,14 @@ function DrawStyle() {
   }
   var defaultScaleFactor = 0.2;
   var textScaleFactor = 1.2
+  this.filter = undefined;
+
+  this.isFeatureFiltered = function(feature){
+    return _this.filter!==undefined && _this.filter!==feature.get("sig").kat;
+  };
 
   this.styleFunctionSelect = function (feature, resolution) {
+
     if (feature.get("sig") != undefined) {
       var isText = feature.get("sig").src === undefined;
       var scale = _this.scaleFunction(resolution, defaultScaleFactor);
@@ -92,10 +98,13 @@ function DrawStyle() {
 
       return isText ? style : [style3, style2, style];
     }
-  }
+  };
 
 
   this.styleFunction = function (feature, resolution) {
+    if(_this.isFeatureFiltered(feature)){
+      return [];
+    }
     if (feature.get("sig") != undefined) {
       var isText = feature.get("sig").src === undefined;
 
