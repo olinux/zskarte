@@ -348,8 +348,9 @@ module.exports = function (grunt) {
             'views/{,*/}*.html',
             'images/{,*/}*.{webp}',
             'styles/fonts/{,*/}*.*',
-	    'offlinemap/{,*/}*.*',
-	    'signaturen/{,*/}*.*',
+	          'offlinemap/{,*/}*.*',
+	          'signaturen/{,*/}*.*',
+            'static/{,*/}*.*'
           ]
         }, {
           expand: true,

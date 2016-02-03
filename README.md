@@ -8,10 +8,6 @@ If you don't have a Google Chrome installation and do not have the permissions t
 
 First, download the latest release from the projects' [release section](https://github.com/olinux/zskarte/releases) and unzip the folder to any place you like.
 
-Although most parts of the application will work if you open the index.html directly in Google Chrome, it's recommended to provide all resources through a web server (requires Java):
-In the root directory, you'll find a script for your operating system (called "runLocalWebServer") which launches a very small web server.
-To run the application, you only have to execute this script and open the URL http://localhost:8888/index.html in Google Chrome. 
-
 ##Configuration
 You can add offline maps to the folder "offlinemap" and register them in the file "offlinemap/offlinemap.jsonp". Please see the provided example. All you need for configuration is the coordinates of the upper left and lower right corner of your map defined in [Mercator projection](http://en.wikipedia.org/wiki/Mercator_projection) as well as the image size in pixels. You can also define for which zoom levels a specific image shall be used and therefore define different levels of detailedness according to the zoom.
 

@@ -108,7 +108,8 @@ zivilschutz.controller('MapController', ['$scope', '$http', 'signatureService', 
   };
   $scope.historyChange = function () {
     if ($scope.isHistory) {
-      drawLayer.getFromHistoryPercentual($scope.history);
+      var date = drawLayer.getFromHistoryPercentual($scope.history);
+      $scope.currentHistoryTime = date.getDay() + "." + date.getMonth() + "." + date.getFullYear() + " " + date.getHours() + ":" + (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
     }
   };
 
@@ -122,8 +123,8 @@ zivilschutz.controller('MapController', ['$scope', '$http', 'signatureService', 
       $scope.isHistory = true;
       $scope.historyChange();
       var date = drawLayer.getFirstDateInHistory();
-      if(date!=null) {
-        date = date.getDay() + "." + date.getMonth() + "." + date.getFullYear() + " " +date.getHours()+":"+date.getMinutes();
+      if (date != null) {
+        date = date.getDay() + "." + date.getMonth() + "." + date.getFullYear() + " " + date.getHours() + ":" + (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
       }
       $scope.historyStart = date;
     }
@@ -205,6 +206,14 @@ zivilschutz.controller('MapController', ['$scope', '$http', 'signatureService', 
   }
 }]);
 
+zivilschutz.controller('DrawController', ['$scope', '$http', 'signatureService', function ($scope, $http, signatureService) {
+  $scope.$on('signatureSelected', function () {
+    $scope.selectedSignature = signatureService.currentSignature;
+    $scope.selectedFeature = undefined;
+  });
+}]);
+
+
 zivilschutz.controller('SignaturenController', ['$scope', '$http', 'signatureService', function ($scope, $http, signatureService) {
 
   window.loadSignaturen = function (data) {
@@ -214,8 +223,9 @@ zivilschutz.controller('SignaturenController', ['$scope', '$http', 'signatureSer
   $scope.selectItem = signatureService.notifySignatureSelection;
   $scope.$on('signatureSelected', function () {
     $scope.selectedSignature = signatureService.currentSignature;
-
   });
+  $scope.newsignatureSymbolType="Point";
+  $scope.newsignatureType = "other";
 
   $scope.$on('colorFilter', function (evt, args) {
     $scope.colorfilter = args;
@@ -264,7 +274,7 @@ zivilschutz.controller('SignaturenController', ['$scope', '$http', 'signatureSer
       };
       $(slider).roundSlider(sliderConfig);
     }
-  } );
+  });
   $scope.deleteFeature = function (feature) {
     $scope.selectedFeature = undefined;
     $scope.selectedSignature = undefined;
@@ -281,13 +291,39 @@ zivilschutz.controller('SignaturenController', ['$scope', '$http', 'signatureSer
     };
     $scope.selectItem(sig);
     $scope.text = undefined;
+  };
+  $scope.createSignature = function () {
+    $scope.newsignature = true;
+    var literally = document.getElementsByClassName('literally')[0];
+    literally.style.minHeight = null;
+    $scope.lc = LC.init(
+      literally,
+      {imageURLPrefix: 'static/literallycanvas/img'}
+    );
+  };
+  $scope.handleSymbolAdded = function(){
+    if($scope.newsignature) {
+      if($scope.newsignatureform.$valid) {
+        if($scope.lc.getImage()==null){
+          alert("Sie müssen etwas zeichnen!");
+        }
+        var sig = {
+          "type": $scope.newsignatureSymbolType,
+          "de": $scope.newsignatureName,
+          "dataURL": $scope.lc.getImage().toDataURL(),
+          "kat": $scope.newsignatureType
+        };
+        var literally = document.getElementsByClassName('literally')[0];
+        literally.style.minHeight = "0px";
+        $scope.lc.teardown();
+        $scope.newsignature = false;
+        $scope.selectItem(sig);
+      }
+      else{
+        alert("Bitte vervollständigen Sie die Angaben!");
+        return;
+      }
+    }
+    $('#signature').modal('hide');
   }
-}]);
-
-
-zivilschutz.controller('DrawController', ['$scope', '$http', 'signatureService', function ($scope, $http, signatureService) {
-  $scope.$on('signatureSelected', function () {
-    $scope.selectedSignature = signatureService.currentSignature;
-    $scope.selectedFeature = undefined;
-  });
 }]);

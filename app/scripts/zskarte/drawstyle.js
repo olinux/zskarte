@@ -38,128 +38,110 @@ function DrawStyle() {
   };
 
   this.styleFunctionSelect = function (feature, resolution) {
-    if (feature.get("sig") !== undefined) {
-      var isText = feature.get("sig").src === undefined;
-      var scale = _this.scaleFunction(resolution, defaultScaleFactor);
-      var style = !isText ? new ol.style.Style({
-        stroke: new ol.style.Stroke({
-          color: _this.colorFunction(feature.get("sig").kat, "highlight"),
-          width: scale * 10,
-          lineDash: getDash(feature, resolution)
-        }),
-        fill: new ol.style.Fill({
-          color: _this.colorFunction(feature.get("sig").kat, "highlight", 0.3)
-        }),
-        image: new ol.style.Icon(({
-          anchor: [0.5, 0.5],
-          anchorXUnits: 'fraction',
-          anchorYUnits: 'fraction',
-          scale: scale,
-          opacity: 1,
-          rotation: feature.get("rotation") !== undefined ? feature.get("rotation") * Math.PI / 180 : 0,
-          src: 'signaturen/' + feature.get("sig").src
-        }))
-      }) : new ol.style.Style({
-        text: new ol.style.Text({
-          text: feature.get("sig").text,
-          font: "30px sans-serif",
-          rotation: feature.get("rotation") !== undefined ? feature.get("rotation") * Math.PI / 180 : 0,
-          scale: _this.scaleFunction(resolution, textScaleFactor),
-          stroke: new ol.style.Stroke({
-            color: '#FFFF66',
-            width: 3
-          }),
-          fill: new ol.style.Fill({
-            color: 'black'
-          }),
-        })
-      });
-      var style2 = !isText ? new ol.style.Style({
-        stroke: new ol.style.Stroke({
-          color: [255, 255, 255, 0.7],
-          width: scale * 20
-        }),
-        image: new ol.style.Circle({
-          radius: scale * 210,
-          fill: new ol.style.Fill({
-            color: [255, 255, 255, 0.9]
-          }),
-          stroke: new ol.style.Stroke({
-            color: _this.colorFunction(feature.get("sig").kat, "highlight", 0.9)
-          })
-        })
-      }) : undefined;
-      var style3 = !isText ? new ol.style.Style({
-        stroke: new ol.style.Stroke({
-          color: _this.colorFunction(feature.get("sig").kat, "highlight"),
-          width: scale * 30
-        })
-      }) : undefined;
-
-      return isText ? style : [style3, style2, style];
-    }
-  };
-
-
-  this.styleFunction = function (feature, resolution) {
-    if (_this.isFeatureFiltered(feature)) {
+    //The feature shall not be displayed or is errorenous. Therefore, we return an empty style.
+    var signature = feature.get("sig");
+    if (_this.isFeatureFiltered(feature) || signature === undefined) {
       return [];
     }
-    if (feature.get("sig") !== undefined) {
-      var isText = feature.get("sig").src === undefined;
-
-      var scale = _this.scaleFunction(resolution, defaultScaleFactor);
-      var style =
-        !isText ?
-          new ol.style.Style({
-            stroke: new ol.style.Stroke({
-              color: _this.colorFunction(feature.get("sig").kat, "default"),
-              width: scale * 20,
-              lineDash: getDash(feature, resolution)
-            }),
-            fill: new ol.style.Fill({
-              color: _this.colorFunction(feature.get("sig").kat, "default", 0.2)
-            }),
-            image: new ol.style.Icon(({
-              anchor: [0.5, 0.5],
-              anchorXUnits: 'fraction',
-              anchorYUnits: 'fraction',
-              scale: _this.scaleFunction(resolution, defaultScaleFactor),
-              opacity: 1,
-              rotation: feature.get("rotation") !== undefined ? feature.get("rotation") * Math.PI / 180 : 0,
-              src: 'signaturen/' + feature.get("sig").src
-            }))
-          }) : new ol.style.Style({
-          text: new ol.style.Text({
-            text: feature.get("sig").text,
-            font: "30px sans-serif",
-            rotation: feature.get("rotation") !== undefined ? feature.get("rotation") * Math.PI / 180 : 0,
-            scale: _this.scaleFunction(resolution, textScaleFactor),
-            stroke: new ol.style.Stroke({
-              color: '#FFFF66',
-              width: 3
-            }),
-            fill: new ol.style.Fill({
-              color: 'black'
-            }),
-          })
-        });
-      var style2 = new ol.style.Style({
-        stroke: new ol.style.Stroke({
-          color: [255, 255, 255, 0.5],
-          width: scale * 40,
-          lineDash: getDash(feature, resolution)
-        }),
-        image: new ol.style.Circle({
-          radius: scale * 210,
-          fill: new ol.style.Fill({
-            color: [255, 255, 255, 0.6]
-          })
-        })
-      });
-      return isText ? style : [style2, style];
+    else {
+      if (signature.text !== undefined) {
+        //It's a text-entry...
+        return _this.textStyleFunction(feature, resolution, signature);
+      }
+      else {
+        //It's a symbol-signature.
+        return _this.imageStyleFunction(feature, resolution, signature, true);
+      }
     }
   };
+  this.styleFunction = function (feature, resolution) {
+    //The feature shall not be displayed or is errorenous. Therefore, we return an empty style.
+    var signature = feature.get("sig");
+    if (_this.isFeatureFiltered(feature) || signature === undefined) {
+      return [];
+    }
+    else {
+      if (signature.text !== undefined) {
+        //It's a text-entry...
+        return _this.textStyleFunction(feature, resolution, signature);
+      }
+      else {
+        //It's a symbol-signature.
+        return _this.imageStyleFunction(feature, resolution, signature, false);
+      }
+    }
+  };
+
+  this.imageStyleFunction = function (feature, resolution, signature, selected) {
+    var isCustomSignature = signature.dataURL !== undefined;
+    if (isCustomSignature) {
+      var scale = _this.scaleFunction(resolution, defaultScaleFactor);
+      var symbol = new Image();
+      symbol.src = signature.dataURL;
+    }
+    var scale = _this.scaleFunction(resolution, defaultScaleFactor);
+    var symbolStyle = new ol.style.Style({
+      stroke: new ol.style.Stroke({
+        color: _this.colorFunction(signature.kat, selected ? "highlight" : "default"),
+        width: scale * 20,
+        lineDash: getDash(feature, resolution)
+      }),
+      fill: new ol.style.Fill({
+        color: _this.colorFunction(signature.kat, selected ? "highlight" : "default", selected ? 0.3 : 0.2)
+      }),
+      image: new ol.style.Icon(({
+        anchor: [0.5, 0.5],
+        anchorXUnits: 'fraction',
+        anchorYUnits: 'fraction',
+        scale: _this.scaleFunction(resolution, defaultScaleFactor),
+        opacity: 1,
+        rotation: feature.get("rotation") !== undefined ? feature.get("rotation") * Math.PI / 180 : 0,
+        src: isCustomSignature ? undefined : 'signaturen/' + signature.src,
+        img: isCustomSignature ? symbol : undefined,
+        imgSize: isCustomSignature ? [300, 300] : undefined
+      }))
+    });
+    var strokeStyle = new ol.style.Style({
+      stroke: new ol.style.Stroke({
+        color: [255, 255, 255, selected ? 0.7 : 0.5],
+        width: scale * 40,
+        lineDash: getDash(feature, resolution)
+      }),
+      image: new ol.style.Circle({
+        radius: scale * 210,
+        fill: new ol.style.Fill({
+          color: [255, 255, 255, selected ? 0.9 : 0.6]
+        })
+      })
+    });
+    var highlightStyle = new ol.style.Style({
+      stroke: new ol.style.Stroke({
+        color: _this.colorFunction(signature.kat, "highlight"),
+        width: scale * 30
+      })
+    })
+
+    return selected ? [strokeStyle, symbolStyle] : [highlightStyle, strokeStyle, symbolStyle];
+  };
+
+  this.textStyleFunction = function (feature, resolution, signature) {
+    return new ol.style.Style({
+      text: new ol.style.Text({
+        text: feature.get("sig").text,
+        font: "30px sans-serif",
+        rotation: feature.get("rotation") !== undefined ? feature.get("rotation") * Math.PI / 180 : 0,
+        scale: _this.scaleFunction(resolution, textScaleFactor),
+        stroke: new ol.style.Stroke({
+          color: '#FFFF66',
+          width: 3
+        }),
+        fill: new ol.style.Fill({
+          color: 'black'
+        }),
+      })
+    });
+  };
+
 
   this.styleFunctionModify = function (feature, resolution) {
     return new ol.style.Style({

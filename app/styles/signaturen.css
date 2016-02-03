@@ -65,7 +65,7 @@ div.kategorie.other {
   border-color: transparent;
 }
 
-#signaturemenuSymb, #signaturemenuText {
+#signaturemenuSymb, #signaturemenuText, #signaturemenuCustomSymb {
   max-height: 60px;
   max-width: 60px;
   position: absolute;
@@ -102,3 +102,18 @@ div.kategorie.other {
 textarea{
    width:100%;
  }
+
+input.ng-valid-required{
+  background-color: #E3F6CE;
+  border-color:green;
+}
+
+
+input.ng-invalid-required{
+  background-color: #F6CED8;
+  border-color:red;
+}
+
+#newsignatureform .control-group{
+  margin-bottom:1em;
+}

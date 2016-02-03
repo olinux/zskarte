@@ -189,8 +189,10 @@ function DrawLayer(selectionHandler) {
         var diffToNow = Math.floor(diff / 100 * (100 - perc));
         var historyDate = new Date(now - diffToNow);
         _this.getFromHistory(historyDate);
+        return historyDate;
       }
     }
+    return null;
   };
 
   this.getFromHistory = function (date) {
