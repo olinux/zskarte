@@ -298,7 +298,9 @@ zivilschutz.controller('SignaturenController', ['$scope', '$http', 'signatureSer
     literally.style.minHeight = null;
     $scope.lc = LC.init(
       literally,
-      {imageURLPrefix: 'static/literallycanvas/img'}
+      {imageURLPrefix: 'static/literallycanvas',
+      imageSize: {width:500, height:500},
+      toolbarPosition:'top'}
     );
   };
   $scope.handleSymbolAdded = function(){

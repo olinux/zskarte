@@ -30,7 +30,7 @@
   <!-- build:css(.tmp) styles/main.css -->
   <link rel="stylesheet" href="styles/signaturen.css">
   <!-- endbuild -->
-  <link rel="stylesheet" href="static/literallycanvas/css/literallycanvas.css"/>
+  <link rel="stylesheet" href="static/literallycanvas/literallycanvas.css"/>
 
   <!--<link rel="stylesheet" href="bower_components/openlayers/css/ol.css" type="text/css">
   <link rel="stylesheet" href="styles/signaturen.css"/>-->
@@ -133,7 +133,7 @@
     </div>
 
 
-    <div class="btn-group">libs
+    <div class="btn-group">
       <button type="button" class="btn btn-info"><span
         class="glyphicon glyphicon-eye-open"/> Layers
       </button>
@@ -155,7 +155,9 @@
         </li>
       </ul>
     </div>
-
+    <a class="btn-group" href="http://www.zso-bern-plus.ch/" target="_blank" style="background-color:#f6560e; color:white; padding:0.2em;">
+      <img src="static/logo_zs.png" style="height:1.8em;"/><span style="margin:0.5em;">ZSO Bern plus</span>
+    </a>
 
   </div>
   <div id="geocoder" class="input-group" style="position:absolute; top:1em; left:10em; width:20vw;">
@@ -197,6 +199,7 @@
       </div>
     </div>
   </div>
+
 
 
   <div id="status"
@@ -258,7 +261,7 @@
 
               </form>
             </div>
-            <div style="min-height:0px; max-height:50vh;" class="literally"></div>
+            <div style="min-height:0px;" class="literally"></div>
             <div ng-hide="newsignature">
               <div class="input-group">
                 <span class="input-group-addon glyphicon glyphicon-search"></span>
