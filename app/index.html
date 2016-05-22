@@ -316,6 +316,9 @@
 </div>
 <script>
   var mapprovider = window.location.hash.substring(1);
+  if(mapprovider===undefined || mapprovider===""){
+    mapprovider = "osm";
+  }
 </script>
 <!-- build:js(.) scripts/vendor.js -->
 <!-- bower:js -->
