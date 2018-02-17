@@ -17,29 +17,31 @@
  * along with Zivilschutzkarte.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+'use strict';
+
 function DrawStyle() {
   var _this = this;
 
   var getDash = function (feature, resolution) {
-    if (feature.get("sig").style === 'dash') {
+    if (feature.get('sig').style === 'dash') {
       var value = _this.scaleFunction(resolution, 20);
       return [value, value];
     }
     else {
       return [0, 0];
     }
-  }
+  };
   var defaultScaleFactor = 0.2;
-  var textScaleFactor = 1.2
+  var textScaleFactor = 1.2;
   this.filter = undefined;
 
   this.isFeatureFiltered = function (feature) {
-    return _this.filter !== undefined && _this.filter !== feature.get("sig").kat;
+    return _this.filter !== undefined && _this.filter !== feature.get('sig').kat;
   };
 
   this.styleFunctionSelect = function (feature, resolution) {
     //The feature shall not be displayed or is errorenous. Therefore, we return an empty style.
-    var signature = feature.get("sig");
+    var signature = feature.get('sig');
     if (_this.isFeatureFiltered(feature) || signature === undefined) {
       return [];
     }
@@ -56,7 +58,7 @@ function DrawStyle() {
   };
   this.styleFunction = function (feature, resolution) {
     //The feature shall not be displayed or is errorenous. Therefore, we return an empty style.
-    var signature = feature.get("sig");
+    var signature = feature.get('sig');
     if (_this.isFeatureFiltered(feature) || signature === undefined) {
       return [];
     }
@@ -74,20 +76,21 @@ function DrawStyle() {
 
   this.imageStyleFunction = function (feature, resolution, signature, selected) {
     var isCustomSignature = signature.dataURL !== undefined;
+    var scale;
     if (isCustomSignature) {
-      var scale = _this.scaleFunction(resolution, defaultScaleFactor);
+      scale = _this.scaleFunction(resolution, defaultScaleFactor);
       var symbol = new Image();
       symbol.src = signature.dataURL;
     }
-    var scale = _this.scaleFunction(resolution, defaultScaleFactor);
+    scale = _this.scaleFunction(resolution, defaultScaleFactor);
     var symbolStyle = new ol.style.Style({
       stroke: new ol.style.Stroke({
-        color: _this.colorFunction(signature.kat, selected ? "highlight" : "default"),
+        color: _this.colorFunction(signature.kat, selected ? 'highlight' : 'default'),
         width: scale * 20,
         lineDash: getDash(feature, resolution)
       }),
       fill: new ol.style.Fill({
-        color: _this.colorFunction(signature.kat, selected ? "highlight" : "default", selected ? 0.3 : 0.2)
+        color: _this.colorFunction(signature.kat, selected ? 'highlight' : 'default', selected ? 0.3 : 0.2)
       }),
       image: new ol.style.Icon(({
         anchor: [0.5, 0.5],
@@ -95,7 +98,7 @@ function DrawStyle() {
         anchorYUnits: 'fraction',
         scale: _this.scaleFunction(resolution, defaultScaleFactor),
         opacity: 1,
-        rotation: feature.get("rotation") !== undefined ? feature.get("rotation") * Math.PI / 180 : 0,
+        rotation: feature.get('rotation') !== undefined ? feature.get('rotation') * Math.PI / 180 : 0,
         src: isCustomSignature ? undefined : 'signaturen/' + signature.src,
         img: isCustomSignature ? symbol : undefined,
         imgSize: isCustomSignature ? [300, 300] : undefined
@@ -116,10 +119,10 @@ function DrawStyle() {
     });
     var highlightStyle = new ol.style.Style({
       stroke: new ol.style.Stroke({
-        color: _this.colorFunction(signature.kat, "highlight"),
+        color: _this.colorFunction(signature.kat, 'highlight'),
         width: scale * 30
       })
-    })
+    });
 
     return selected ? [strokeStyle, symbolStyle] : [highlightStyle, strokeStyle, symbolStyle];
   };
@@ -127,9 +130,9 @@ function DrawStyle() {
   this.textStyleFunction = function (feature, resolution, signature) {
     return new ol.style.Style({
       text: new ol.style.Text({
-        text: feature.get("sig").text,
-        font: "30px sans-serif",
-        rotation: feature.get("rotation") !== undefined ? feature.get("rotation") * Math.PI / 180 : 0,
+        text: feature.get('sig').text,
+        font: '30px sans-serif',
+        rotation: feature.get('rotation') !== undefined ? feature.get('rotation') * Math.PI / 180 : 0,
         scale: _this.scaleFunction(resolution, textScaleFactor),
         stroke: new ol.style.Stroke({
           color: '#FFFF66',
@@ -137,7 +140,7 @@ function DrawStyle() {
         }),
         fill: new ol.style.Fill({
           color: 'black'
-        }),
+        })
       })
     });
   };
@@ -162,30 +165,30 @@ function DrawStyle() {
 
   this.colorFunction = function (type, style, alpha) {
     var color = _this.colorMap[type][style];
-    if (color != undefined) {
-      return "rgba(" + color + ", " + (alpha != undefined ? alpha : "1") + ")";
+    if (color !== undefined) {
+      return 'rgba(' + color + ', ' + (alpha !== undefined ? alpha : '1') + ')';
     }
     else {
-      return "blue";
+      return 'blue';
     }
-  }
+  };
 
   this.colorMap = ({
-    "blue": {
-      "default": "0, 0, 255",
-      "highlight": "121, 153, 242"
+    'blue': {
+      'default': '0, 0, 255',
+      'highlight': '121, 153, 242'
     },
-    "red": {
-      "default": "255, 0, 0",
-      "highlight": "255, 106, 106"
+    'red': {
+      'default': '255, 0, 0',
+      'highlight': '255, 106, 106'
     },
-    "other": {
-      "default": "148, 139, 104",
-      "highlight": "184, 172, 125"
+    'other': {
+      'default': '148, 139, 104',
+      'highlight': '184, 172, 125'
     },
-    "orange": {
-      "default": "255, 145, 0",
-      "highlight": "255, 204, 0"
+    'orange': {
+      'default': '255, 145, 0',
+      'highlight': '255, 204, 0'
     }
   });
 
@@ -196,12 +199,12 @@ function DrawStyle() {
     var styles = [
         new ol.style.Style({
           stroke: new ol.style.Stroke({
-            color: _this.colorFunction(feature.get("sig").kat, "default"),
+            color: _this.colorFunction(feature.get('sig').kat, 'default'),
             width: scale * 10,
             lineDash: [0, 0]
           }),
           fill: new ol.style.Fill({
-            color: _this.colorFunction(feature.get("sig").kat, "default", 0.2)
+            color: _this.colorFunction(feature.get('sig').kat, 'default', 0.2)
           }),
           image: new ol.style.Icon(({
             anchor: [0.5, 0.5],
@@ -209,7 +212,7 @@ function DrawStyle() {
             anchorYUnits: 'fraction',
             scale: _this.scaleFunction(resolution, 0.5),
             opacity: 1,
-            src: 'signaturen/' + feature.get("sig").src
+            src: 'signaturen/' + feature.get('sig').src
           }))
         })
       ]
@@ -224,7 +227,7 @@ function DrawStyle() {
         styles.push(new ol.style.Style({
           geometry: new ol.geom.Point(end),
           image: new ol.style.Icon({
-            src: 'img/arrow' + feature.get("sig").kat + '.png',
+            src: 'img/arrow' + feature.get('sig').kat + '.png',
             scale: _this.scaleFunction(resolution, 2),
             anchor: [0.75, 0.5],
             rotateWithView: false,

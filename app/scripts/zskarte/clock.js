@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Zivilschutzkarte.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+'use strict';
 function Clock(clockElement) {
     var update = function () {
         var now = new Date();
@@ -26,19 +26,17 @@ function Clock(clockElement) {
         var day = normalize(now.getDate());
         var month = normalize(now.getMonth()+1);
         var year = now.getFullYear();
-        clockElement.innerHTML = h + ":" + m + ":" + s+"<br/>"+day+"."+month+"."+year;
-        var t = setTimeout(function () {
-            update()
+        clockElement.innerHTML = h + ':' + m + ':' + s+'<br/>'+day+'.'+month+'.'+year;
+        setTimeout(function () {
+            update();
         }, 1000);
     };
 
     function normalize(i) {
         if (i < 10) {
-            i = "0" + i
+            i = '0' + i;
         }
         return i;
     }
     update();
-
-
 }

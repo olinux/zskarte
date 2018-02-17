@@ -17,6 +17,7 @@
  * along with Zivilschutzkarte.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+'use strict';
 function OfflineMap(coordinates, imageSize, url, minRes, maxRes) {
     this.imgProjection = new ol.proj.Projection({
         code: 'pixel',

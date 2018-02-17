@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Zivilschutzkarte.  If not, see <http://www.gnu.org/licenses/>.
  */
+'use strict';
 
 var zivilschutz = angular.module('zivilschutz', ['ui.bootstrap']);
 
@@ -44,39 +45,39 @@ zivilschutz.factory('signatureService', function ($rootScope) {
 });
 
 
-zivilschutz.controller('SmartboardController', ['$scope', '$http', 'signatureService', '$rootScope', function ($scope, $http, signatureService, $rootScope) {
-  //SB.wantsTouches = true;
-  SB.initializeSMARTBoard();
-
-  var green = "#009300";
-  var red = "#ff0000";
-  var blue = "#0000ff";
-  var black = "#000000";
-
-  var htmlColorToFilter = function (color) {
-    switch (color) {
-      case green:
-        return orangeFilter;
-      case red:
-        return redFilter;
-      case blue:
-        return blueFilter;
-      default:
-        return undefined;
-    }
-  };
-
-  // set up tool change event handler
-  SB.onToolChange = function (evt) {
-    if (evt.colorAsHTML !== undefined) {
-      $rootScope.$broadcast('colorFilter', htmlColorToFilter(evt.colorAsHTML));
-      $("#smartboardconnector").css("background", evt.colorAsHTML);
-    }
-  };
-  SB.statusChanged = function (status) {
-    $("#smartboardconnector").text(status);
-  };
-}]);
+// zivilschutz.controller('SmartboardController', ['$scope', '$http', 'signatureService', '$rootScope', function ($scope, $http, signatureService, $rootScope) {
+//   //SB.wantsTouches = true;
+//   SB.initializeSMARTBoard();
+//
+//   var green = '#009300';
+//   var red = '#ff0000';
+//   var blue = '#0000ff';
+//   var black = '#000000';
+//
+//   var htmlColorToFilter = function (color) {
+//     switch (color) {
+//       case green:
+//         return orangeFilter;
+//       case red:
+//         return redFilter;
+//       case blue:
+//         return blueFilter;
+//       default:
+//         return undefined;
+//     }
+//   };
+//
+//   // set up tool change event handler
+//   SB.onToolChange = function (evt) {
+//     if (evt.colorAsHTML !== undefined) {
+//       $rootScope.$broadcast('colorFilter', htmlColorToFilter(evt.colorAsHTML));
+//       $('#smartboardconnector').css('background', evt.colorAsHTML);
+//     }
+//   };
+//   SB.statusChanged = function (status) {
+//     $('#smartboardconnector').text(status);
+//   };
+// }]);
 
 
 zivilschutz.controller('MapController', ['$scope', '$http', 'signatureService', function ($scope, $http, signatureService) {
@@ -88,7 +89,7 @@ zivilschutz.controller('MapController', ['$scope', '$http', 'signatureService', 
   var clock = new Clock(document.getElementById('clock'));
 
   var mainMap;
-  $scope.historyChooser = "live";
+  $scope.historyChooser = 'live';
 
   $scope.toggleLayer = function (element) {
     for (var i = 0; i < element.layers.length; i++) {
@@ -102,14 +103,14 @@ zivilschutz.controller('MapController', ['$scope', '$http', 'signatureService', 
   };
 
   $scope.removeAll = function () {
-    if (window.confirm("Sind Sie sicher, dass Sie alle Elemente löschen möchten?")) {
+    if (window.confirm('Sind Sie sicher, dass Sie alle Elemente löschen möchten?')) {
       drawLayer.removeAll();
     }
   };
   $scope.historyChange = function () {
     if ($scope.isHistory) {
       var date = drawLayer.getFromHistoryPercentual($scope.history);
-      $scope.currentHistoryTime = date.getDay() + "." + date.getMonth() + "." + date.getFullYear() + " " + date.getHours() + ":" + (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
+      $scope.currentHistoryTime = date.getDay() + '.' + date.getMonth() + '.' + date.getFullYear() + ' ' + date.getHours() + ':' + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
     }
   };
 
@@ -123,8 +124,8 @@ zivilschutz.controller('MapController', ['$scope', '$http', 'signatureService', 
       $scope.isHistory = true;
       $scope.historyChange();
       var date = drawLayer.getFirstDateInHistory();
-      if (date != null) {
-        date = date.getDay() + "." + date.getMonth() + "." + date.getFullYear() + " " + date.getHours() + ":" + (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
+      if (date !== null) {
+        date = date.getDay() + '.' + date.getMonth() + '.' + date.getFullYear() + ' ' + date.getHours() + ':' + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
       }
       $scope.historyStart = date;
     }
@@ -191,19 +192,19 @@ zivilschutz.controller('MapController', ['$scope', '$http', 'signatureService', 
         var first = data[0];
         mainMap.gotoCoordinates(parseFloat(first.lon), parseFloat(first.lat));
       }
-    })
+    });
   };
 
   $scope.readFromFile = function () {
-    var file = document.getElementById("loadFromFile").files[0];
+    var file = document.getElementById('loadFromFile').files[0];
     if (file) {
       var reader = new FileReader();
-      reader.readAsText(file, "UTF-8");
+      reader.readAsText(file, 'UTF-8');
       reader.onload = function (evt) {
         drawLayer.loadFromString(evt.target.result);
-      }
+      };
     }
-  }
+  };
 }]);
 
 zivilschutz.controller('DrawController', ['$scope', '$http', 'signatureService', function ($scope, $http, signatureService) {
@@ -224,8 +225,8 @@ zivilschutz.controller('SignaturenController', ['$scope', '$http', 'signatureSer
   $scope.$on('signatureSelected', function () {
     $scope.selectedSignature = signatureService.currentSignature;
   });
-  $scope.newsignatureSymbolType="Point";
-  $scope.newsignatureType = "other";
+  $scope.newsignatureSymbolType='Point';
+  $scope.newsignatureType = 'other';
 
   $scope.$on('colorFilter', function (evt, args) {
     $scope.colorfilter = args;
@@ -243,11 +244,11 @@ zivilschutz.controller('SignaturenController', ['$scope', '$http', 'signatureSer
         min: 0,
         max: 360,
         step: 1,
-        value: $scope.selectedFeature !== undefined ? $scope.selectedFeature.get("rotation") : 0,
+        value: $scope.selectedFeature !== undefined ? $scope.selectedFeature.get('rotation') : 0,
         radius: 50,
         width: 5,
         startAngle: 90,
-        endAngle: "+360",
+        endAngle: '+360',
         animation: true,
         showTooltip: false,
         editableTooltip: false,
@@ -255,17 +256,17 @@ zivilschutz.controller('SignaturenController', ['$scope', '$http', 'signatureSer
         disabled: false,
         keyboardAction: true,
         mouseScrollAction: false,
-        sliderType: "min-range",
-        circleShape: "full",
-        handleSize: "+16",
-        handleShape: "dot",
+        sliderType: 'min-range',
+        circleShape: 'full',
+        handleSize: '+16',
+        handleShape: 'dot',
 
         // events
         beforeCreate: null,
         create: null,
         start: null,
         drag: function (x) {
-          $scope.selectedFeature.set("rotation", x.value);
+          $scope.selectedFeature.set('rotation', x.value);
           $scope.selectedFeature.changed();
         },
         change: null,
@@ -286,11 +287,13 @@ zivilschutz.controller('SignaturenController', ['$scope', '$http', 'signatureSer
   $scope.addText = function () {
     $scope.selectedFeature = undefined;
     var sig = {
-      "type": "Point",
-      "text": $scope.text
+      'type': 'Point',
+      'text': $scope.text
     };
     $scope.selectItem(sig);
     $scope.text = undefined;
+  };
+  $scope.draw = function () {
   };
   $scope.createSignature = function () {
     $scope.newsignature = true;
@@ -299,33 +302,42 @@ zivilschutz.controller('SignaturenController', ['$scope', '$http', 'signatureSer
     $scope.lc = LC.init(
       literally,
       {imageURLPrefix: 'static/literallycanvas',
-      imageSize: {width:500, height:500},
+      imageSize: {width:600, height:600},
       toolbarPosition:'top'}
     );
+  };
+  $scope.cancelAddSignature = function(){
+    var literally = document.getElementsByClassName('literally')[0];
+    literally.style.minHeight = '0';
+    $scope.newsignature = false;
+    if($scope.lc!==undefined) {
+        $scope.lc.teardown();
+    }
+    $('#signature').modal('hide');
   };
   $scope.handleSymbolAdded = function(){
     if($scope.newsignature) {
       if($scope.newsignatureform.$valid) {
-        if($scope.lc.getImage()==null){
-          alert("Sie müssen etwas zeichnen!");
+        if($scope.lc.getImage()===null){
+          window.alert('Sie müssen etwas zeichnen!');
         }
         var sig = {
-          "type": $scope.newsignatureSymbolType,
-          "de": $scope.newsignatureName,
-          "dataURL": $scope.lc.getImage().toDataURL(),
-          "kat": $scope.newsignatureType
+          'type': $scope.newsignatureSymbolType,
+          'de': $scope.newsignatureName,
+          'dataURL': $scope.lc.getImage().toDataURL(),
+          'kat': $scope.newsignatureType
         };
         var literally = document.getElementsByClassName('literally')[0];
-        literally.style.minHeight = "0px";
+        literally.style.minHeight = '0';
         $scope.lc.teardown();
         $scope.newsignature = false;
         $scope.selectItem(sig);
       }
       else{
-        alert("Bitte vervollständigen Sie die Angaben!");
+        window.alert('Bitte vervollständigen Sie die Angaben!');
         return;
       }
     }
     $('#signature').modal('hide');
-  }
+  };
 }]);

@@ -17,6 +17,7 @@
  * along with Zivilschutzkarte.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+'use strict';
 /**
  * The draw layer allows us to draw new features onto the map.
  * @constructor
@@ -36,14 +37,14 @@ function DrawLayer(selectionHandler) {
   });
   this.historyDate = undefined;
   this.selectionChanged = function () {
-    if (_this.select.getFeatures().getLength() == 1) {
+    if (_this.select.getFeatures().getLength() === 1) {
       _this.selectionHandler(_this.select.getFeatures().item(0));
     }
-    else if (_this.select.getFeatures().getLength() == 0) {
+    else if (_this.select.getFeatures().getLength() === 0) {
       _this.selectionHandler(undefined);
     }
     else {
-      alert("too many items selected at once!");
+      window.alert('too many items selected at once!');
     }
   };
   this.source = new ol.source.Vector({
@@ -65,7 +66,7 @@ function DrawLayer(selectionHandler) {
 
  this.inhistory = function(){
    return _this.historyDate !==undefined;
- }
+ };
 
   this.selectorHandler = function (e) {
     if(!_this.inhistory()) {
@@ -108,21 +109,24 @@ function DrawLayer(selectionHandler) {
     _this.map = map;
     _this.map.map.addInteraction(_this.select);
     _this.map.map.addInteraction(_this.modify);
-    _this.map.map.on("click", _this.selectorHandler);
+    _this.map.map.on('click', _this.selectorHandler);
     _this.map.map.addLayer(_this.layer);
   };
 
   var writeFeatures = function () {
     var features = _this.source.getFeatures();
-    for (var i = 0; i < features.length; i++) {
-      var feature = features[i];
-      var geometry = feature.getGeometry().transform(_this.map.projectionFunction(), getMercatorProjection());
+    var feature;
+    var geometry;
+    var i;
+    for (i = 0; i < features.length; i++) {
+      feature = features[i];
+      geometry = feature.getGeometry().transform(_this.map.projectionFunction(), getMercatorProjection());
       feature.setGeometry(geometry);
     }
     var json = JSON.stringify(new ol.format.GeoJSON({defaultDataProjection: 'EPSG:3857'}).writeFeatures(features));
-    for (var i = 0; i < features.length; i++) {
-      var feature = features[i];
-      var geometry = feature.getGeometry().transform(getMercatorProjection(), _this.map.projectionFunction());
+    for (i = 0; i < features.length; i++) {
+      feature = features[i];
+      geometry = feature.getGeometry().transform(getMercatorProjection(), _this.map.projectionFunction());
       feature.setGeometry(geometry);
     }
 
@@ -135,28 +139,29 @@ function DrawLayer(selectionHandler) {
 
   this.removeAll = function(){
     if(!_this.inhistory()) {
-      localStorage.removeItem("map");
+      localStorage.removeItem('map');
+      localStorage.removeItem('mapold');
       _this.source.clear();
       _this.select.getFeatures().clear();
     }
-  }
+  };
 
 
   this.save = function () {
     if(!_this.inhistory()) {
-      var previouslyStored = localStorage.getItem("map");
+      var previouslyStored = localStorage.getItem('map');
       var now = writeFeatures();
       if (now !== previouslyStored) {
-        localStorage.setItem("map", now);
-        var history = localStorage.getItem("mapold");
+        localStorage.setItem('map', now);
+        var history = localStorage.getItem('mapold');
         if (history === null) {
-          history = {"elements": []};
+          history = {'elements': []};
         }
         else {
           history = JSON.parse(history);
         }
-        history.elements.push({"time": new Date(), "content": now});
-        localStorage.setItem("mapold", JSON.stringify(history));
+        history.elements.push({'time': new Date(), 'content': now});
+        localStorage.setItem('mapold', JSON.stringify(history));
       }
     }
   };
@@ -169,7 +174,7 @@ function DrawLayer(selectionHandler) {
   };
 
   this.getFirstDateInHistory = function(){
-    var history = localStorage.getItem("mapold");
+    var history = localStorage.getItem('mapold');
     if (history !== null) {
       history = JSON.parse(history);
       if (history.elements.length > 0) {
@@ -183,7 +188,7 @@ function DrawLayer(selectionHandler) {
     if(perc!==undefined) {
       _this.save();
       var firstDateInHistory = _this.getFirstDateInHistory();
-      if(firstDateInHistory!=null){
+      if(firstDateInHistory!==null){
         var now = new Date();
         var diff = now - firstDateInHistory;
         var diffToNow = Math.floor(diff / 100 * (100 - perc));
@@ -196,7 +201,7 @@ function DrawLayer(selectionHandler) {
   };
 
   this.getFromHistory = function (date) {
-    var history = localStorage.getItem("mapold");
+    var history = localStorage.getItem('mapold');
     if (history !== null) {
       _this.map.map.removeInteraction(_this.select);
       _this.map.map.removeInteraction(_this.modify);
@@ -227,13 +232,14 @@ function DrawLayer(selectionHandler) {
         var geometry = feature.getGeometry().transform(getMercatorProjection(), _this.map.projectionFunction());
         feature.setGeometry(geometry);
       }
-      _this.source.addFeatures(features)
+      _this.source.addFeatures(features);
     }
   };
 
   this.load = function () {
+    var items;
     if(_this.inhistory) {
-      var items = localStorage.getItem("map");
+      items = localStorage.getItem('map');
     }
     else{
 
@@ -244,7 +250,7 @@ function DrawLayer(selectionHandler) {
   };
 
   this.startDrawing = function (signature) {
-    if (_this.drawer != undefined) {
+    if (_this.drawer !== undefined) {
       _this.map.map.removeInteraction(_this.drawer);
     }
     _this.drawer = new ol.interaction.Draw({
@@ -252,7 +258,7 @@ function DrawLayer(selectionHandler) {
       type: signature.type
     });
     _this.drawer.once('drawend', function (event) {
-      event.feature.set("sig", signature);
+      event.feature.set('sig', signature);
       if (event.feature.getGeometry().getType() === 'Polygon') {
         var point = new ol.geom.Point(event.feature.getGeometry().getFirstCoordinate());
         var coll = new ol.geom.GeometryCollection();
@@ -279,7 +285,7 @@ function DrawLayer(selectionHandler) {
     if ('download' in exportLink) {
       exportLink.href = _this.toDataUrl();
     } else {
-      alert('Download not supported');
+      window.alert('Download not supported');
     }
   };
 
@@ -289,11 +295,11 @@ function DrawLayer(selectionHandler) {
 
   this.startAutoSave = function () {
     var t = setTimeout(function () {
-      document.getElementById('status').innerHTML = "auto save...";
+      document.getElementById('status').innerHTML = 'auto save...';
       _this.save();
       setTimeout(function () {
-        document.getElementById('status').innerHTML = "";
-      }, 1000)
+        document.getElementById('status').innerHTML = '';
+      }, 1000);
       _this.startAutoSave();
     }, 10000);
 

@@ -17,7 +17,23 @@
  * along with Zivilschutzkarte.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+'use strict';
+
 var initialCoordinates = [829038.2228723184,5933590.521128002];
+
+
+var getCoordinatesProjection = function(){
+    return ol.proj.get('EPSG:4326');
+};
+
+var getMercatorProjection = function(){
+    return ol.proj.get('EPSG:3857');
+};
+
+var getSwissProjection = function(){
+    return ol.proj.get('EPSG:21781');
+};
+
 
 function ZsMap(map, layers, projectionFunction) {
     var _this = this;
@@ -36,54 +52,23 @@ function ZsMap(map, layers, projectionFunction) {
             var url;
             _this.map.once('postcompose', function (event) {
                 var canvas = event.context.canvas;
-                var data = canvas.toDataURL('image/jpeg');
-                exportLink.href = data;
+                exportLink.href = canvas.toDataURL('image/jpeg');
             });
             _this.map.renderSync();
 
         } else {
-            alert('Download not supported');
+            window.alert('Download not supported');
         }
-    }
+    };
 
     this.gotoCoordinates = function(lon, lat){
         var coordinates= ol.proj.transform([lon, lat], getCoordinatesProjection(), _this.projectionFunction());
         _this.map.getView().setCenter(coordinates);
-    }
+    };
 
-    this.providerList = ["offline", "osm", "geoadmin"];
+    this.providerList = ['offline', 'osm', 'geoadmin'];
     this.providerList.splice( this.providerList.indexOf(mapprovider), 1 );
 }
-
-var getCoordinatesProjection = function(){
-    return ol.proj.get('EPSG:4326');
-};
-
-var getMercatorProjection = function(){
-    return ol.proj.get('EPSG:3857');
-};
-
-var getSwissProjection = function(){
-    return ol.proj.get('EPSG:21781');
-};
-
-
-
-
-function switchMapProvider(provider, $http, callback){
-    switch (provider) {
-        case "offline":
-            createOfflineMap($http, callback);
-            break;
-        case "geoadmin":
-            createGeoAdminMap(callback);
-            break;
-        default:
-            createOpenStreetMap(callback);
-           break;
-    }
-}
-
 
 function createOfflineMap($http, callback){
     var map = new ol.Map({
@@ -102,11 +87,11 @@ function createOfflineMap($http, callback){
                 var image = offlineMap.images[i2];
                 images.push(new OfflineMap(image.coordinates, image.imageSize, 'offlinemap/'+offlineMap.subfolder+'/'+image.url, image.minzoomLevel, image.maxzoomLevel).layer);
             }
-            layers.push({"name": offlineMap.name, "layers": images})
+            layers.push({'name': offlineMap.name, 'layers': images});
             callback(new ZsMap(map, layers, getMercatorProjection));
 
         }
-    }
+    };
     $http.jsonp('offlinemap/offlinemap.jsonp');
 }
 
@@ -127,24 +112,24 @@ function createOpenStreetMap(callback){
         source: new ol.source.MapQuest({layer: 'osm'})
     });
     var aerial = new ol.layer.Tile({
-            style: 'Aerial',
-            visible: false,
-            source: new ol.source.MapQuest({layer: 'sat'})
-        });
+        style: 'Aerial',
+        visible: false,
+        source: new ol.source.MapQuest({layer: 'sat'})
+    });
     var aerialWithLabels= new ol.layer.Group({
-            style: 'AerialWithLabels',
-            visible: false,
-            layers: [
-                new ol.layer.Tile({
-                    source: new ol.source.MapQuest({layer: 'sat'})
-                }),
-                new ol.layer.Tile({
-                    source: new ol.source.MapQuest({layer: 'hyb'})
-                })
-            ]
-        });
-    layers.push({"name": "Open Street Map", "layers": [osm]});
-    layers.push({"name": "MapQuest road", "layers": [road]});
+        style: 'AerialWithLabels',
+        visible: false,
+        layers: [
+            new ol.layer.Tile({
+                source: new ol.source.MapQuest({layer: 'sat'})
+            }),
+            new ol.layer.Tile({
+                source: new ol.source.MapQuest({layer: 'hyb'})
+            })
+        ]
+    });
+    layers.push({'name': 'Open Street Map', 'layers': [osm]});
+    layers.push({'name': 'MapQuest road', 'layers': [road]});
     callback(new ZsMap(map, layers, getMercatorProjection));
 }
 function createGeoAdminMap(callback){
@@ -159,14 +144,30 @@ function createGeoAdminMap(callback){
     var layers = [];
     var pixelkarte = ga.layer.create('ch.swisstopo.pixelkarte-farbe');
     pixelkarte.setOpacity(0.9);
-    layers.push({"name": "Pixelkarte", "layers": [pixelkarte]});
-    layers.push({"name": "SwissIMAGE", "layers": [ga.layer.create('ch.swisstopo.swissimage')]});
-    layers.push({"name": "IVS Geländekarte", "layers": [ga.layer.create('ch.astra.ivs-gelaendekarte')]});
-    layers.push({"name": "Strassennetz", "layers": [ga.layer.create('ch.swisstopo.vec25-strassennetz')]});
-    layers.push({"name": "3D-Gebäude", "layers": [ga.layer.create('ch.swisstopo.swissbuildings3d')]});
-    layers.push({"name": "Gemeindegrenzen", "layers": [ga.layer.create('ch.swisstopo.swissboundaries3d-gemeinde-flaeche.fill')]});
-    layers.push({"name": "Hanglagen", "layers": [ga.layer.create('ch.blw.hang_steillagen')]});
+    layers.push({'name': 'Pixelkarte', 'layers': [pixelkarte]});
+    layers.push({'name': 'SwissIMAGE', 'layers': [ga.layer.create('ch.swisstopo.swissimage')]});
+    layers.push({'name': 'IVS Geländekarte', 'layers': [ga.layer.create('ch.astra.ivs-gelaendekarte')]});
+    //layers.push({'name': 'Strassennetz', 'layers': [ga.layer.create('ch.swisstopo.vec25-strassennetz')]});
+    //layers.push({'name': '3D-Gebäude', 'layers': [ga.layer.create('ch.swisstopo.swissbuildings3d')]});
+    layers.push({'name': 'Gemeindegrenzen', 'layers': [ga.layer.create('ch.swisstopo.swissboundaries3d-gemeinde-flaeche.fill')]});
+    layers.push({'name': 'Hanglagen', 'layers': [ga.layer.create('ch.blw.hang_steillagen')]});
 
 
     callback(new ZsMap(map, layers, getSwissProjection));
 }
+
+function switchMapProvider(provider, $http, callback){
+    switch (provider) {
+        case 'offline':
+            createOfflineMap($http, callback);
+            break;
+        case 'geoadmin':
+            createGeoAdminMap(callback);
+            break;
+        default:
+            createOpenStreetMap(callback);
+            break;
+    }
+}
+
+
