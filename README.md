@@ -1,3 +1,8 @@
+# Announcement
+Zivilschutzkarte has been deprecated. Its successor version Zivilschutzkarte 2 has been forked, extended and made accessible at https://zskarte.ch .
+If you are looking for the source code of this version, please visit https://github.com/zskarte/zskarte.
+
+
 # Zivilschutzkarte
 Zivilschutz-Karte is a javascript application (based on AngularJS) which allows to draw situation maps for disaster management. It has been developed for the Swiss civil defense organisation "Zivilschutzorganisation Bern Plus". The drawing application can be used either with standard computers or with interactive whiteboards and is ready to be executed - e.g. in case of interrupted connections - in offline mode (with prepared offline maps and a restricted set of functionalities) as well as in online mode with the full capacities of modern map features.
 
